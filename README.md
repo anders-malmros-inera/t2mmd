@@ -1,2 +1,2 @@
 # t2mmd
-Mermaid repo for Mermaid graphs
+Maid graphs for the realization of the T2 architectures
