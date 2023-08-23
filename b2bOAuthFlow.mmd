@@ -1,0 +1,21 @@
+sequenceDiagram
+  participant Client as System A
+  participant AuthorizationServer as Authorization Server
+  participant ResourceServer as System B
+
+  Client ->> AuthorizationServer: Requests Client Credentials
+  AuthorizationServer ->> Client: Provides Client Credentials
+
+  Client ->> AuthorizationServer: Requests Access Token using Client Credentials
+  AuthorizationServer ->> Client: Returns Access Token
+
+  Client ->> ResourceServer: Requests Access to System B
+  ResourceServer ->> AuthorizationServer: Validates Access Token
+
+  AuthorizationServer ->> ResourceServer: Access Token Validation Result
+
+  alt Valid Access Token
+    ResourceServer -->> Client: Provides System B Data
+  else Invalid Access Token
+    ResourceServer -->> Client: Returns Access Denied
+  end
