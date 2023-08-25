@@ -1,5 +1,7 @@
 flowchart TD
+classDef container stroke-width:4px, fill:transparent, font-size:20px
 classDef actor fill:#D2B9D5
+
 
 subgraph coop[Teknisk Arkitektur för samverkan]
     subgraph r1[Region A]
@@ -20,6 +22,7 @@ subgraph coop[Teknisk Arkitektur för samverkan]
     end
     r2:::actor
 end
+coop:::container
 
 %% Interactions 
 s1-- 1. sök tjänst -->tk1
