@@ -1,0 +1,31 @@
+flowchart TD
+classDef actor fill:#D2B9D5
+
+subgraph coop[Teknisk Arkitektur för samverkan]
+    subgraph r1[Region A]
+        direction LR
+        s1(System)
+        tk1(Lokal tjänstekatalog)
+    end
+    r1:::actor
+    subgraph fedop[Federationsoperatör]
+        direction LR
+        fk(Federationsoperatörens \n federationsmedlemskatalog)
+        tk(Federationsoperatörens \n tjänstekatalog)
+    end
+    fedop:::actor
+    subgraph r2[Region B]
+        direction LR
+        s2(System)        
+    end
+    r2:::actor
+end
+
+%% Interactions 
+s1-- 1. sök tjänst -->tk1
+tk1-- 2. sök tjänst centralt \n om den inte hittas lokalt \n eller hämtas med nocache -->tk
+s1-- 3. säkerställ att \n samverkan är möjlig -->fk
+s1-- 4. skicka tjänstebegäran -->s2
+s2-- 5. säkerställ att behörighet finns -->fk
+s2-- 6. utför tjänstebegäran -->s2
+s2-. 7. svara på tjänstebegäran .-s1
