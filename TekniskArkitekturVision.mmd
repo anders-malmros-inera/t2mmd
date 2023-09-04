@@ -2,8 +2,7 @@ flowchart TD
 classDef container stroke-width:4px, fill:transparent, font-size:20px
 classDef actor fill:#D2B9D5
 
-
-subgraph coop[Teknisk Arkitektur för samverkan]
+subgraph interactions[Teknisk Arkitektur för samverkan]
     subgraph r1[Region A]
         direction LR
         s1(System)
@@ -22,7 +21,7 @@ subgraph coop[Teknisk Arkitektur för samverkan]
     end
     r2:::actor
 end
-coop:::container
+interactions:::container
 
 %% Interactions 
 s1-- 1. sök tjänst -->tk1
@@ -32,3 +31,4 @@ s1-- 4. skicka tjänstebegäran -->s2
 s2-- 5. säkerställ att behörighet finns -->fk
 s2-- 6. utför tjänstebegäran -->s2
 s2-. 7. svara på tjänstebegäran .-s1
+
