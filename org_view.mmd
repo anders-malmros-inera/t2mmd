@@ -8,4 +8,10 @@ subgraph coop[Aktörsvy]
     tfedo[Operatör av tillitsfederation]
     ifedo[Operatör av informationsfederation]
 end
-k & p -- samverkar inom -->ifed
+k & p -- samverkar inom --> ifed
+ifedo -- ansvarar för --> ifed
+tfedo -- ansvarar för --> tfed
+ifed -. pekar på .-> tfed
+p & k -. har tillit till .-> tfed
+p -- producerar --> t
+k -- konsumerar --> t
