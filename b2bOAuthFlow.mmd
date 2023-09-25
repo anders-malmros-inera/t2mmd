@@ -1,21 +1,29 @@
 sequenceDiagram
-  participant Client as System A
-  participant AuthorizationServer as Authorization Server
-  participant ResourceServer as System B
+  participant c as System A
+  participant tak as Tjänstekatalog
+  participant as as Auktorisationstjänst
+  participant f as Federationsmedlemskatalog
+  participant rs as System B
 
-  Client ->> AuthorizationServer: Requests Client Credentials
-  AuthorizationServer ->> Client: Provides Client Credentials
+  c ->>+ tak: Sök e-tjänst, givet logisk adressat <br/> och interoperabilitetsspecifikation
+  tak -->>- c: e-tjänstens URL, Auktorisationstjänstens URL
 
-  Client ->> AuthorizationServer: Requests Access Token using Client Credentials
-  AuthorizationServer ->> Client: Returns Access Token
+  c ->>+ as: Begär åtkomst till e-tjänsten. <br/>Skicka med System A:s klientidentitet
+  as ->>+ f: inhämta federationsmedlemsinformation <br/> för e-tjänsten
+  f -->>- as: federationsmedlemsdata
+  as ->> as: Utvärdera åtkomstpolicy för System A 
+  alt Åtkomst beviljad
+    as -->> c: åtkomstintyg
+  else Access Denied 
+    as -->>- c: HTTP 403 Forbidden
+  end 
 
-  Client ->> ResourceServer: Requests Access to System B
-  ResourceServer ->> AuthorizationServer: Validates Access Token
+  c ->>+ rs: Anropa e-tjänst hos System B
 
-  AuthorizationServer ->> ResourceServer: Access Token Validation Result
-
-  alt Valid Access Token
-    ResourceServer -->> Client: Provides System B Data
-  else Invalid Access Token
-    ResourceServer -->> Client: Returns Access Denied
+  rs ->> rs: Validera åtkomstintyg
+  alt åtkomstintyg giltigt
+    rs ->> rs: utför begäran
+    rs -->> c: resultat
+  else åtkomstintyg ogiltigt
+    rs -->>- c: HTTP 403 Forbidden
   end
