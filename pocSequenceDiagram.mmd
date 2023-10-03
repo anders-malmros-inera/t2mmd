@@ -1,0 +1,60 @@
+sequenceDiagram
+  actor u as Slutanvändare
+  box rgb(230, 240, 199) as Leverantör av API-klient
+    participant c as API-klient
+  end
+  box rgb(242, 240,233) Federationsoperatören Inera
+    participant tak as Ineras Tjänstekatalog
+    participant ias as Ineras Auktorisationstjänst
+    participant ia as Ineras Avtal
+    actor fu as Federationsoperatör
+    participant f as Ineras Federationsmedlemskatalog
+  end
+  box rgb(256, 240, 200) as Leverantör av digital tjänst via API
+    participant as as Auktorisationstjänst
+    participant rs as API
+  end
+
+
+
+  activate fu
+  fu -) ia: registrera informationsfederationsavtal med <br/>Leverantör av digital tjänst via API
+  fu -) f: registrera Leverantör av digital tjänst <br/>via API i Federationsmedlemskatalogen
+  fu -) tak: registrera API i Tjänstekatalogen
+  fu -) ia: registrera informationsfederationsavtal med <br/>Leverantör av API-klient
+  fu -) f: registrera Leverantör av API-klient, <br/>samt API-klientens metadata <br/>i Federationsmedlemskatalogen
+  deactivate fu
+
+  u -->>+ c: En slutanvändare kan, <br/>men behöver inte, <br/>vara inblandad<br/><br/>Inled interaktion
+
+  
+  c ->>+ ias: Begär åtkomst till Tjänstekatalogen. <br/>Skicka med API-klientens, och<br/>eventuell slutanvändares identitet
+  ias ->>+ ia: Inhämta beslutsunderlag för åtkomstbeslut
+  ia -->>- ias: avtal
+  ias ->> ias: Utvärdera åtkomstpolicy för Tjänstekatalogen
+  ias -->>- c: åtkomstintyg 
+
+  
+  c ->>+ tak: Sök API, givet logisk adressat <br/> och interoperabilitetsspecifikation
+  tak ->> tak: validera åtkomstintyg
+  tak -->>- c: APIets URL, Auktorisationstjänstens URL
+
+  c ->>+ as: Begär åtkomst till API. <br/>Skicka med API-klientens identitet, och<br/>eventuell slutanvändares identitet
+  
+  as ->>+ ias: Begär åtkomst till Federationsmedlemskatalogen. <br/>Skicka med Auktorisationstjänstens identitet
+  ias ->> ias: Utvärdera åtkomstpolicy för Federationsmedlemskatalogen
+  ias -->>- as: åtkomstintyg
+  
+  as ->>+ f: inhämta federationsmedlemsinformation <br/> för e-tjänsten
+  f ->> f: validera åtkomstintyg
+  f -->>- as: federationsmedlemsdata
+  
+  as ->> as: Utvärdera åtkomstpolicy för API
+  as -->>- c: åtkomstintyg
+  
+  c ->>+ rs: Anropa API
+  rs ->> rs: validera åtkomstintyg
+  rs ->> rs: utför begäran
+  rs -->>- c: resultat
+
+  c -->>- u: Visa resultat

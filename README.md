@@ -1,2 +1,2 @@
 # t2mmd
-Maid graphs for the realization of the T2 architectures
+Mermaid graphs for the realization of the T2 architectures
