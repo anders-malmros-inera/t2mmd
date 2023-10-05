@@ -1,0 +1,28 @@
+sequenceDiagram
+  box rgb(230, 240, 199) as Leverantör av API-klient
+    participant c as API-klient
+  end
+  box rgb(242, 240,233) Federationsoperatören Inera
+    participant tak as Ineras Tjänstekatalog
+    participant ias as Ineras Auktorisationstjänst
+    participant ia as Ineras Avtal
+    actor fu as Federationsoperatör
+    participant f as Ineras Federationsmedlemskatalog
+  end
+  box rgb(256, 240, 200) as Leverantör av digital tjänst via API
+    participant as as Auktorisationstjänst
+    participant rs as API
+  end
+
+
+
+  activate fu
+  rs -) fu: Skriv avtal om medlemsskap i informationsfederationen 
+  fu -) ia: registrera informationsfederationsavtal med <br/>Leverantör av digital tjänst via API
+  fu -) f: registrera Leverantör av digital tjänst <br/>via API i Federationsmedlemskatalogen
+  fu -) tak: registrera API i Tjänstekatalogen
+  c -) fu: Skriv avtal om medlemsskap i informationsfederationen 
+  fu -) ia: registrera informationsfederationsavtal med <br/>Leverantör av API-klient
+  fu -) f: registrera Leverantör av API-klient, <br/>samt API-klientens metadata <br/>i Federationsmedlemskatalogen
+  deactivate fu
+

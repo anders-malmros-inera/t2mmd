@@ -1,5 +1,4 @@
 sequenceDiagram
-  actor u as Slutanvändare
   box rgb(230, 240, 199) as Leverantör av API-klient
     participant c as API-klient
   end
@@ -16,28 +15,6 @@ sequenceDiagram
   end
 
 
-
-  activate fu
-  fu -) ia: registrera informationsfederationsavtal med <br/>Leverantör av digital tjänst via API
-  fu -) f: registrera Leverantör av digital tjänst <br/>via API i Federationsmedlemskatalogen
-  fu -) tak: registrera API i Tjänstekatalogen
-  fu -) ia: registrera informationsfederationsavtal med <br/>Leverantör av API-klient
-  fu -) f: registrera Leverantör av API-klient, <br/>samt API-klientens metadata <br/>i Federationsmedlemskatalogen
-  deactivate fu
-
-  u -->>+ c: En slutanvändare kan, <br/>men behöver inte, <br/>vara inblandad<br/><br/>Inled interaktion
-
-  
-  c ->>+ ias: Begär åtkomst till Tjänstekatalogen. <br/>Skicka med API-klientens, och<br/>eventuell slutanvändares identitet
-  ias ->>+ ia: Inhämta beslutsunderlag för åtkomstbeslut
-  ia -->>- ias: avtal
-  ias ->> ias: Utvärdera åtkomstpolicy för Tjänstekatalogen
-  ias -->>- c: åtkomstintyg 
-
-  
-  c ->>+ tak: Sök API, givet logisk adressat <br/> och interoperabilitetsspecifikation
-  tak ->> tak: validera åtkomstintyg
-  tak -->>- c: APIets URL, Auktorisationstjänstens URL
 
   c ->>+ as: Begär åtkomst till API. <br/>Skicka med API-klientens identitet, och<br/>eventuell slutanvändares identitet
   
@@ -56,5 +33,3 @@ sequenceDiagram
   rs ->> rs: validera åtkomstintyg
   rs ->> rs: utför begäran
   rs -->>- c: resultat
-
-  c -->>- u: Visa resultat

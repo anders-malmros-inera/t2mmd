@@ -1,0 +1,28 @@
+sequenceDiagram
+  box rgb(230, 240, 199) as Leverantör av API-klient
+    participant c as API-klient
+  end
+  box rgb(242, 240,233) Federationsoperatören Inera
+    participant tak as Ineras Tjänstekatalog
+    participant ias as Ineras Auktorisationstjänst
+    participant ia as Ineras Avtal
+    actor fu as Federationsoperatör
+    participant f as Ineras Federationsmedlemskatalog
+  end
+  box rgb(256, 240, 200) as Leverantör av digital tjänst via API
+    participant as as Auktorisationstjänst
+    participant rs as API
+  end
+
+  
+  c ->>+ ias: Begär åtkomst till Tjänstekatalogen. <br/>Skicka med API-klientens, och<br/>eventuell slutanvändares identitet
+  ias ->>+ ia: Inhämta beslutsunderlag för åtkomstbeslut
+  ia -->>- ias: avtal
+  ias ->> ias: Utvärdera åtkomstpolicy för Tjänstekatalogen
+  ias -->>- c: åtkomstintyg 
+
+  
+  c ->>+ tak: Sök API, givet logisk adressat <br/> och interoperabilitetsspecifikation
+  tak ->> tak: validera åtkomstintyg
+  tak -->>- c: APIets URL, Auktorisationstjänstens URL
+
