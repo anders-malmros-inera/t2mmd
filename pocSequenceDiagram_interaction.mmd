@@ -1,15 +1,15 @@
 sequenceDiagram
-  box rgb(230, 240, 199) as Leverantör av API-klient
+  box rgb(230, 240, 199) as Leverantör av <br/>API-klient
     participant c as API-klient
   end
   box rgb(242, 240,233) Federationsoperatören Inera
-    participant tak as Ineras Tjänstekatalog
-    participant ias as Ineras Auktorisationstjänst
-    participant ia as Ineras Avtal
-    actor fu as Federationsoperatör
-    participant f as Ineras Federationsmedlemskatalog
+    %participant tak as Tjänstekatalog
+    participant ias as Auktorisationstjänst
+    %%participant ia as Avtalsrepo
+    %%actor fu as Federationsoperatör
+    participant f as Federationsmedlemskatalog
   end
-  box rgb(256, 240, 200) as Leverantör av digital tjänst via API
+  box rgb(256, 240, 200) as Leverantör av<br/>digital tjänst via API
     participant as as Auktorisationstjänst
     participant rs as API
   end
@@ -22,7 +22,7 @@ sequenceDiagram
   ias ->> ias: Utvärdera åtkomstpolicy för Federationsmedlemskatalogen
   ias -->>- as: åtkomstintyg
   
-  as ->>+ f: inhämta federationsmedlemsinformation <br/> för e-tjänsten
+  as ->>+ f: inhämta<br/>federationsmedlemsinformation <br/> för e-tjänsten
   f ->> f: validera åtkomstintyg
   f -->>- as: federationsmedlemsdata
   
