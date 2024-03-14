@@ -1,0 +1,12 @@
+%%{init: { 'sequence': {'noteAlign': 'left'} }}%%
+sequenceDiagram
+participant c as Client
+participant p as Producer
+participant p2 as Vårdinformationssystem
+c->>p: getInfo
+p-->>c: info
+note over c: Example of reference <br>{ 'url' : 'http://vis.region.se/filer/a.pdf' ,<br>'token' : 'eyJhbGciOiJIUzI1NiIsInR5...',<br>'Content-Type' : 'application/pdf'  }
+c->>p2: fetch attachment from vis.region.se
+note over p2: GET /filer/a.pdf HTTP/1.1<br>Host: vis.region.se<br>Accept: application/pdf<br>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5...
+p2-->>c: HTTP/1.1 200 OK
+note over c: Content-Type: application/pdf<br>Content-Length: 12345<br>Date: Tue, 20 Feb 2024 12:00:00 GMT<br><br>%PDF-1.4<br>%âãÏÓ<br>...

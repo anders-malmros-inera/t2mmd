@@ -1,0 +1,15 @@
+%%{init: { 'sequence': {'noteAlign': 'left'} }}%%
+sequenceDiagram
+
+NPÖ ->> NTjP: getCareDocumentation
+NTjP ->> RTP: getCareDocumentation
+RTP ->> Cosmic: getCareDocumentation
+note right of Cosmic: <SOAP-ENV> ... <br><Reference><br><ProducerEndPoint>https://rtp.skane.se/ServiceContracts/GetAttahments</ProducerEndPoint><br><LocicalAddress>SE2321000206-E00603</LogicalAddress><br><TargetNamespace>urn:infrastructure:itintegration:attachments.GetAttachment:rivtabp21</TargetNamespace><br><DocumentIdentifier>00112233-4455-6677-8899-aabbccddeeff</DocumentIdentifier><br><AccessToken>signedJWT{original-serviceconsumer, document-identifier}</AccessToken<br></Reference><br>...</SOAP-ENV>
+Cosmic -->> RTP: GetCareDocumentationResponse
+RTP-->>NTjP: GetCareDocumentationResponse
+NTjP-->>NPÖ: GetCareDocumentationResponse
+NPÖ->>RTP: GetAttachment(LogicalAddress, DocumentIdentifier)
+note over RTP: RTPns anslutningsadress fås <br>antingen genom distribution innan, <br>alternativt som del av referensen 
+RTP->>Cosmic: GetAttachment(LogicalAddress, DocumentIdentifier)
+Cosmic-->>RTP:attachment
+RTP-->>NPÖ: attachment
