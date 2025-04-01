@@ -1,0 +1,10 @@
+```mermaid
+erDiagram 
+"Federationsoperatör" ||--|{ "Informationsfederation" : "hanterar"
+"Informationsfederation" ||--|| "Federationsavtal" : "regleras av"
+"Federationsavtal" }|--|| "Federationsoperatör" : "hanteras av"
+"Informationsfederation" ||--|{ "Digital tjänst" : "omfattar"
+"Federationsmedlem" }|--|{ "Federationsavtal" : "skriver på"
+"Digital tjänst" ||--|| "Interoperabilitetsspecifikation" : "beskrivs av"
+"Federationsmedlem" }|--|{ "Digital tjänst" : "samverkar via"
+```

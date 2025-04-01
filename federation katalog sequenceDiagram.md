@@ -1,0 +1,20 @@
+```mermaid
+sequenceDiagram
+ 
+
+   participant rc as remissklient A
+      
+create participant ts as åtkomsttjänst
+rc ->> ts:begär intyg
+create    participant fc as medlemskatalog
+ts->> fc: verifiera medlem A
+fc->>fc:verifera åtkomsttjänstens rättigheter
+destroy fc
+fc->>ts:retur medlemsstatus A
+destroy ts
+ts->>rc: returnera intyg
+
+create participant rp as remissproducent
+rc->>rp:skicka remiss
+rp->>rc: skicka kvittens
+```
