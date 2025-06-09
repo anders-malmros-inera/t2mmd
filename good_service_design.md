@@ -1,7 +1,7 @@
 ```mermaid
 flowchart TB
 
-d(Diagnos) -- kan medföra --> f(Funktionsnedsättning\nsynonymt med 'nedsatt funktion') 
+d(Diagnos) -- kan medföra --> f(Funktionsnedsättning - synonymt med 'nedsatt funktion') 
 kf("Kognitiv funktionsnedsättning") & ff("Sensorisk funktionsnedsättning") --är en typ av --> f
 
 f -- leder ofta till --> s(Svårighet)
