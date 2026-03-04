@@ -11,7 +11,7 @@ sequenceDiagram
     box  rgb(255,255,204) Tillitshantering
         participant KM as Klientmetadatakatalog
     end
-    box  rgb(255,255,204) Samverkansgrund 
+    box  rgb(255,255,204) Regel- och avtalsgrund 
         participant FM as Federationsmedlemskatalog
     end
     box  rgb(255,255,204) Åtkomstkontroll
@@ -48,7 +48,7 @@ sequenceDiagram
     LK->>LK: Uppdatera lokal tidsstämpel
 ```
 
-## Aggregerande tjänst
+## Orkestrerande tjänst
 
 ```mermaid
 sequenceDiagram
