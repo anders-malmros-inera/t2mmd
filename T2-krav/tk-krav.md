@@ -39,57 +39,117 @@ sequenceDiagram
 sequenceDiagram
     autonumber
     participant LK as Lokal Katalog
-    box  rgb(255,255,204) Samverkansinfrastruktur
-        participant CK as Central Katalog
-    end
+    participant CK as Central Katalog
+
     LK->>CK: Begär uppdateringar sedan viss tidpunkt
     CK-->>LK: Returnera ändringar (delta)
     LK->>LK: Applicera ändringar
     LK->>LK: Uppdatera lokal tidsstämpel
 ```
 
-## Orkestrerande tjänst
+# Informationsförsörjningstjänst
 
 ```mermaid
 sequenceDiagram
     autonumber
     participant K as Klient
-    box  rgb(255,255,204) Orkestrering
-        participant AT as Orkestrerande tjänst
+    box  rgb(255,255,204) Datainhämtning
+        participant AT as Aggregerande tjänst
         participant IT as Informationsindex
+        participant FK as Formatkonverterare
     end
     box  rgb(255,255,204) Lös koppling
         participant TC as Tjänstekatalog
     end
-    participant TP1 as API (FHIR)
-    participant TP2 as API (SOAP)
+    participant TP as API (SOAP alt FHIR)
 
-    K->>AT: Begär data om invånare<br>format: FHIR/SOAP
-    AT->>IT: Fråga vilka producenter som har data
-    IT-->>AT: Lista över producenter
+    K->>AT: Begär data om visst subjekt (tex en invånare)<br>formatval: FHIR/SOAP<br>leverans: aggregerat/strömmat
+    AT->>IT: Fråga vilka producenter <br>som har data
+    IT-->>AT: Lista av producenter
     
     loop För varje producent
-        AT->>TC: Hämta tjänsteinformation
-        TC-->>AT: Tjänstetyp (FHIR/SOAP) och endpoint
+        AT->>TC: Sök efter tjänst som stödjer<br>aktuell information
+        TC-->>AT: Tjänsteinformation
     end
     
     par Parallella anrop
-        AT->>TP1: Hämta data (FHIR)
-        TP1-->>AT: Data i FHIR-format
-    and
-        AT->>TP2: Hämta data (SOAP)
-        TP2-->>AT: Data i SOAP-format
+        AT->>TP: Hämta data 
+        TP-->>AT: data
+        AT->>FK: konvertera data till önskat format
+        FK-->>AT:konverterat data
+
+        opt Strömmat svar önskat
+            AT-->>K: delsvar
+        end
     end
     
-    AT->>AT: Normalisera data till internt format
-    AT->>AT: Aggregera data från alla källor
-    
-    alt Klient vill ha FHIR
-        AT->>AT: Konvertera till FHIR
-        AT-->>K: Aggregerad data i FHIR-format
-    else Klient vill ha SOAP
-        AT->>AT: Konvertera till SOAP
-        AT-->>K: Aggregerad data i SOAP-format
+    opt Aggregerat svar önskat
+        AT->>AT: Aggregera data från alla källor
+        AT-->>K: aggregerat svar
     end
 ```
+
+# Lösningsarkitektur
+```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+graph 
+    subgraph tk[Tjänstekonsument]
+        tkc(Klient)
+    end
+    subgraph si[Samverkansinfrastrukturen]
+        sias(Åtkomstintygstjänst)
+        sitk(Tjänstekatalog)
+%%        siagg(Aggregerande tjänst)
+%%        siii(Informationsindex)
+        sifmk(Federationsmedlemskatalog)
+        sikk(Klientmetadatakatalog)
+%%        sifk(Formatkonverterare)
+    end
+    subgraph tp[Tjänsteproducent]
+        tpas(Åtkomstintygstjänst)
+        tpapi(API)
+    end
+    tkc--1. -->sias
+    tkc--2. -->sitk
+    tpas--3.2 -->sifmk
+    tpas--3.1 -->sikk
+    tkc--3. -->tpas
+    tkc--4. -->tpapi  
+    
+```
+
+```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+graph 
+    subgraph tk[Tjänstekonsument]
+        tkc(Klient)
+    end
+    subgraph si[Samverkansinfrastrukturen]
+        sias(Åtkomstintygstjänst)
+        sitk(Tjänstekatalog)
+        siagg(Aggregerande tjänst)
+        siii(Informationsindex)
+        sifmk(Federationsmedlemskatalog)
+        sikk(Klientmetadatakatalog)
+        sifk(Formatkonverterare)
+    end
+    subgraph tp[Tjänsteproducent]
+        tpas(Åtkomstintygstjänst)
+        tpapi(API)
+    end
+    
+    tkc--1. -->sias
+    tkc--2. -->siagg
+    siagg--2.1 -->sias
+    siagg--2.2 -->siii
+    siagg--2.3 -->sitk
+    siagg--2.4 -->tpas
+    tpas--2.4.2 -->sifmk
+    tpas--2.4.1 -->sikk
+    siagg--2.5 -->tpapi  
+    siagg--2.6 -->sifk  
+
+```
+
+
 
