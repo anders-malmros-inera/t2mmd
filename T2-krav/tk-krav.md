@@ -1,4 +1,6 @@
-# Anropa tjänst
+# Samverkansinfrastrukturen
+
+## Anropa tjänst
 
 ```mermaid
 
@@ -33,7 +35,7 @@ sequenceDiagram
     API-->>Klient: resurs
 ```
 
-# Katalogsynkronisering
+## Katalogsynkronisering
 
 ```mermaid
 sequenceDiagram
@@ -47,7 +49,7 @@ sequenceDiagram
     LK->>LK: Uppdatera lokal tidsstämpel
 ```
 
-# Informationsförsörjningstjänst
+## Informationsförsörjningstjänst
 
 ```mermaid
 sequenceDiagram
@@ -89,7 +91,7 @@ sequenceDiagram
     end
 ```
 
-# Lösningsarkitektur
+## Lösningsarkitektur
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
@@ -118,7 +120,6 @@ graph
     tkc-- 4. -->tpapi  
     
 ```
-
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
@@ -154,14 +155,22 @@ graph
 
 ```
 
-# Total lösningsarkitektur
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+## Total lösningsarkitektur
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph LR
 
-classDef extern fill:#F8E5A0
-classDef box fill:#ffffff,stroke:#000000
+style tk fill:#F8E5A0
+style sib fill:#F8E5A0
+style ndi fill:#F8E5A0
+style i fill:#ffffff,stroke:#000000
+style si fill:#f9f9f9,stroke:#000000
+
+style tk fill:#F8E5A0
+style tp fill:#F8E5A0
+style ndi fill:#F8E5A0
+style sib fill:#F8E5A0
 
 subgraph i[Inera]
     subgraph itk[Inera-tjänster]
@@ -212,13 +221,11 @@ subgraph i[Inera]
         end
         cp1 & cp2 & cp4 & cp5 & cp6 & cp7 -->gw -->cp3
     end
-    si:::box
 
     subgraph itp[Inera-tjänster]
         Formulärtjänsten
         mm(...)
         Födelseanmälan
-
     end
 
     subgraph drift[Ineras driftplattform]
@@ -227,26 +234,22 @@ subgraph i[Inera]
         end
     end
 end
-i:::box
 
 subgraph tk[Tjänstekonsument]
     tkc(Klient)
 end
-tk:::extern
 
 subgraph tp[Tjänsteproducent]
     tpas(Åtkomstintygstjänst)
     tprtp(Regional tjänsteplattform)
     tpfs(FHIR server)
 end
-tp:::extern
 
 
 subgraph ndi[Nationell Digital Infrastruktur]
     ntk(Nationell tjänstekatalog)
     pdi(Patientdataindex)
 end
-ndi:::extern
 
 subgraph sib[Samordnad identitet och behörighet]
     res(Resolver)
@@ -254,7 +257,6 @@ subgraph sib[Samordnad identitet och behörighet]
     o2>OAuth2-profil, Ena]
     of>OpenID Federation-profil, oidc.se]
 end
-sib:::extern
 
 
 sias-.realiserar.->o2
