@@ -172,9 +172,9 @@ subgraph i[Inera]
 
     subgraph si[Samverkansinfrastrukturen]
         subgraph siit[Inera informationsförsörjning]
-            svodc[SVOD-tjänst]
-            ehdsc[EHDS-tjänst]
-            jc[Invånartjänst]
+            svodc(SVOD-tjänst)
+            ehdsc(EHDS-tjänst)
+            jc(Invånartjänst)
         end
         subgraph si1[T2-stödtjänster]
             sitk(Tjänstekatalog)
@@ -223,7 +223,7 @@ subgraph i[Inera]
 
     subgraph drift[Ineras driftplattform]
         subgraph kk[Kubernetes kluster]
-            s[...]
+            s(...)
         end
     end
 end
@@ -250,9 +250,9 @@ ndi:::extern
 
 subgraph sib[Samordnad identitet och behörighet]
     res(Resolver)
-    oi([OpenID Connect-profil, oidc.se])
-    o2([OAuth2-profil, Ena])
-    of([OpenID Federation-profil, oidc.se])
+    oi>OpenID Connect-profil, oidc.se]
+    o2>OAuth2-profil, Ena]
+    of>OpenID Federation-profil, oidc.se]
 end
 sib:::extern
 
