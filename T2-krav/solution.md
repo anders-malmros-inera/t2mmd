@@ -37,8 +37,12 @@ graph
 ```
 
 ## Detaljerad
+```mermaid
+  info
+```
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph 
 
 subgraph i[Inera]
