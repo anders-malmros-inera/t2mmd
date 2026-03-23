@@ -1,4 +1,42 @@
-## Total lösningsarkitektur
+# Lösningsarkitektur
+
+## Översikt
+
+```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+graph 
+    subgraph tk[Tjänstekonsument]
+        tkc(Klient)
+    end
+    
+
+    subgraph si[Samverkansinfrastrukturen]
+        subgraph si1[Komponenter]
+            sias(Åtkomstintygstjänst) & sitk(Tjänstekatalog) & siagg(Aggregerande tjänst)
+            ~~~
+            siii(Informationsindex) & sifmk(Federationsmedlemskatalog) & sikk(Klientmetadatakatalog) & sifk(Formatkonverterare)
+        end
+        subgraph drift[Driftplattform]
+            gw(API Gateway)~~~ap(API Management)
+
+        end
+        subgraph ntjp[Nationell tjänsteplattform]
+            vp(Virtualisering) & ag(Aggregering) & anp(Anpassning)
+            ~~~
+            ei(Engagemangsindex) & tak(Tjänsteadressering)
+        end
+    end
+    subgraph tp[Tjänsteproducent]
+        tpas(Åtkomstintygstjänst)
+        tprtp(Regional tjänsteplattform)
+        tpfs(FHIR server)
+    end
+    %%tk --> si --> tp
+    tkc-->si-->tp
+
+```
+
+## Detaljerad 
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
@@ -132,7 +170,6 @@ siit -- anropar --> tpas
 siit -- anropar --> tpfs
 tkc --> sias
 itk --> sias
-tkc -- anropar --> itp
 si ~~~ itp
 apim -- integrerar med --> siiam
 
