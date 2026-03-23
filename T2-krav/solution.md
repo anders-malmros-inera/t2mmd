@@ -37,45 +37,42 @@ graph
 ```
 
 ## Detaljerad
-```mermaid
-  info
-```
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
-graph 
+flowchart 
 
-subgraph i[Inera]
-    subgraph itk[Inera-klienter]
+subgraph i[<h1>Inera</b>]
+    subgraph itk[<h3>Inera-klienter</h3>]
         npo(NPÖ)
         itkmm(...)
         journalen(Journalen)
     end
 
-    subgraph si[Samverkansinfrastrukturen]
-        subgraph siit[Inera informationsförsörjning]
+    subgraph si[<h2>Samverkansinfrastrukturen</h2>]
+        subgraph siit[<h3>Inera informationsförsörjning</h3>]
             svodc(SVOD-tjänst)
             ehdsc(EHDS-tjänst)
             jc(Invånartjänst)
         end
 
-        subgraph si1[T2-stödtjänster]
+        subgraph si1[<h3>T2-stödtjänster</h3>]
             sitk(Tjänstekatalog)
             siii(Informationsindex)
             sifmk(Federationsmedlemskatalog)
         end
 
-        subgraph si2[FHIR/BP2.1]
+        subgraph si2[<h3>FHIR/BP2.1</h3>]
             sifk(Formatkonverterare)
         end
 
-        subgraph siiam[IAM-komponenter]
+        subgraph siiam[<h3>IAM-komponenter</h3>]
             sias(Åtkomstintygstjänst)
             sikk(Klientmetadatakatalog)
             sir(Inera-resolver)
         end
 
-        subgraph ntjp[Nationell tjänsteplattform]
+        subgraph ntjp[<h3>Nationell tjänsteplattform</h3>]
             vp(Virtualiseringsplattform)
             ag(Aggregeringsplattform)
             anp(Anpassningsplattform)
@@ -83,11 +80,11 @@ subgraph i[Inera]
             tak(Tjänsteadresseringskatalog)
         end
 
-        subgraph apim[APIM]
-            subgraph dp[Dataplan]
+        subgraph apim[<h3>APIM</h3>]
+            subgraph dp[<h4>Dataplan</h4>]
                 gw(API Gateway)
             end
-            subgraph cp[Kontrollplan]
+            subgraph cp[<h4>Kontrollplan</h4>]
                 cp1(Utvecklarportal)
                 cp2(API-regelverk)
                 cp3(Uppföljning och analys)
@@ -107,35 +104,35 @@ subgraph i[Inera]
         gw --> cp3
     end
 
-    subgraph itp[Inera-API:er]
+    subgraph itp[<h3>Inera-API:er</h3>]
         formular(Formulärtjänsten)
         itpmm(...)
         fodelse(Födelseanmälan)
     end
 
-    subgraph drift[Ineras driftplattform]
-        subgraph kk[Kubernetes kluster]
+    subgraph drift[<h3>Ineras driftplattform</h3>]
+        subgraph kk[<h4>Kubernetes-kluster</h4>]
             s(...)
         end
     end
 end
 
-subgraph tk[Tjänstekonsument]
+subgraph tk[<h2>Tjänstekonsument</h2>]
     tkc(Klient)
 end
 
-subgraph tp[Tjänsteproducent]
+subgraph tp[<h2>Tjänsteproducent</h2>]
     tpas(Åtkomstintygstjänst)
     tprtp(Regional tjänsteplattform)
     tpfs(FHIR server)
 end
 
-subgraph ndi[Nationell Digital Infrastruktur]
+subgraph ndi[<h2>Nationell Digital Infrastruktur</h2>]
     ntk(Nationell tjänstekatalog)
     pdi(Patientdataindex)
 end
 
-subgraph sib[Samordnad identitet och behörighet]
+subgraph sib[<h2>Samordnad identitet och behörighet</h2>]
     res(Resolver)
     oi(OpenID Connect-profil, oidc.se)
     o2(OAuth2-profil, Ena)
@@ -173,7 +170,7 @@ tkc -- "anropar" --> itp
 si -.-> itp
 apim -- "integrerar med" --> siiam
 
-style i fill:#ffffff,stroke:#000000
+style i fill:#fae1eb,stroke:#000000
 style si fill:#f9f9f9,stroke:#000000
 
 style tk fill:#F8E5A0
