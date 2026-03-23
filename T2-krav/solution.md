@@ -39,6 +39,7 @@ graph
 ## Detaljerad
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart 
 
 subgraph i[<h1>Inera</b>]
