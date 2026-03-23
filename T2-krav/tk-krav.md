@@ -7,17 +7,17 @@
 sequenceDiagram
     autonumber
     participant Klient
+
     box rgb(255,255,204) Lös koppling
-        box rgb(255,255,204) Lös koppling
         participant TC as Tjänstekatalog
     end
-    box  rgb(255,255,204) Tillitshantering
+    box rgb(255,255,204) Tillitshantering
         participant KM as Klientmetadatakatalog
     end
-    box  rgb(255,255,204) Regel- och avtalsgrund 
+    box rgb(255,255,204) Regel- och avtalsgrund 
         participant FM as Federationsmedlemskatalog
     end
-    box  rgb(255,255,204) Åtkomstkontroll
+    box rgb(255,255,204) Åtkomstkontroll
         participant ÅT as Åtkomstintygstjänst
     end
     participant API
@@ -92,7 +92,7 @@ sequenceDiagram
     end
 ```
 
-## Lösningsarkitektur
+## Anropa API
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
@@ -120,38 +120,4 @@ graph
     tkc-- 3. -->tpas
     tkc-- 4. -->tpapi  
     
-```
-
-```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
-graph 
-    subgraph tk[Tjänstekonsument]
-        tkc(Klient)
-    end
-    
-
-    subgraph si[Samverkansinfrastrukturen]
-        subgraph si1[Komponenter]
-            sias(Åtkomstintygstjänst) & sitk(Tjänstekatalog) & siagg(Aggregerande tjänst)
-            ~~~
-            siii(Informationsindex) & sifmk(Federationsmedlemskatalog) & sikk(Klientmetadatakatalog) & sifk(Formatkonverterare)
-        end
-        subgraph drift[Driftplattform]
-            gw(API Gateway)~~~ap(API Management)
-
-        end
-        subgraph ntjp[Nationell tjänsteplattform]
-            vp(Virtualisering) & ag(Aggregering) & anp(Anpassning)
-            ~~~
-            ei(Engagemangsindex) & tak(Tjänsteadressering)
-        end
-    end
-    subgraph tp[Tjänsteproducent]
-        tpas(Åtkomstintygstjänst)
-        tprtp(Regional tjänsteplattform)
-        tpfs(FHIR server)
-    end
-    %%tk --> si --> tp
-    tkc-->si-->tp
-
 ```
