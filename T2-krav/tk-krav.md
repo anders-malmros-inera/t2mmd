@@ -155,9 +155,9 @@ graph
 ```
 
 # Total lösningsarkitektur
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph LR
 
 classDef extern fill:#F8E5A0
