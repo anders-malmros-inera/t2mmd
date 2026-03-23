@@ -36,25 +36,14 @@ graph
 
 ```
 
-## Detaljerad 
+## Detaljerad
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
-graph LR
-
-%%style tk fill:#F8E5A0
-style sib fill:#F8E5A0
-style ndi fill:#F8E5A0
-style i fill:#ffffff,stroke:#000000
-style si fill:#f9f9f9,stroke:#000000
-
-style tk fill:#F8E5A0
-style tp fill:#F8E5A0
-style ndi fill:#F8E5A0
-style sib fill:#F8E5A0
+graph 
 
 subgraph i[Inera]
-    subgraph itk[Inera-tjänster]
+    subgraph itk[Inera-klienter]
         NPÖ
         mmm(...)
         Journalen
@@ -109,7 +98,7 @@ subgraph i[Inera]
     
     end
 
-    subgraph itp[Inera-tjänster]
+    subgraph itp[Inera-API:er]
         Formulärtjänsten
         mm(...)
         Födelseanmälan
@@ -148,10 +137,10 @@ end
 
 cp1 & cp2 & cp4 & cp5 & cp6 & cp7 -->gw -->cp3
 sias -. realiserar .-> o2
-sitk -. modelleras efter .- ntk
-siii -. modelleras efter .- pdi
+sitk -. modelleras efter .-> ntk
+siii -. modelleras efter .-> pdi
 sikk -. linjerar med .-> of
-sir -. linjerar med .- res
+sir -. linjerar med .-> res
 sias --> sir --> sikk
 ag --> vp & ei & tak
 vp --> anp & ag & ei & tak
@@ -171,7 +160,14 @@ siit -- anropar --> tpfs
 tkc --> sias
 itk --> sias
 si ~~~ itp
-apim -- integrerar med --> siiam
+
+style i fill:#ffffff,stroke:#000000
+style si fill:#f9f9f9,stroke:#000000
+
+style tk fill:#F8E5A0
+style tp fill:#F8E5A0
+style ndi fill:#00E5F0
+style sib fill:#00E5F0
 
 
 ```
