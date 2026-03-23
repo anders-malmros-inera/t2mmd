@@ -39,7 +39,6 @@ graph
 ## Detaljerad
 
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph 
 
 subgraph i[Inera]
