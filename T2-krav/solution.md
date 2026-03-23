@@ -39,6 +39,7 @@ graph
 ## Detaljerad
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart 
 
 subgraph i[<h1>Inera</b>]
@@ -168,5 +169,13 @@ itk --> sias
 tkc -- "anropar" --> itp
 si -.-> itp
 apim -- "integrerar med" --> siiam
+
+style i fill:#fae1eb,stroke:#000000
+style si fill:#f9f9f9,stroke:#000000
+
+style tk fill:#F8E5A0
+style tp fill:#F8E5A0
+style ndi fill:#00E5F0
+style sib fill:#00E5F0
 
 ```
