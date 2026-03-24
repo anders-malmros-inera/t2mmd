@@ -38,7 +38,7 @@ graph TB
 
 ```mermaid
 graph 
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+%%{init: {"flowchart": {"defaultRenderer": "elk2"}} }%%
 
 subgraph inera[Inera]
     subgraph itk[Inera-klienter]
@@ -163,10 +163,10 @@ style ndi fill:#00E5F0
 style sib fill:#00E5F0
 
 %% Formatting for elk renderer
-%%tkc~~~itk
 ei~~~kubernetes
 itk~~~kubernetes
 
 %% Formatting for dagre (standard) renderer
-%%gw~~~~~~sib & ndi & tp
+gw~~~sib & ndi & tp
+tkc~~~npo
 ```
