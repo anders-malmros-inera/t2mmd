@@ -32,17 +32,18 @@ graph
         tpfs(FHIR server)
     end
     %%tk --> si --> tp
-    tkc-->si-->tp
+    tkc --> sias
+    sias --> tpas
 
 ```
 
 ## Detaljerad
 
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph 
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
-subgraph i[<h1>Inera</b>]
+subgraph inera[<h1>Inera</h1>]
     subgraph itk[<h3>Inera-klienter</h3>]
         npo(NPÖ)
         itkmm(...)
@@ -112,9 +113,9 @@ subgraph i[<h1>Inera</b>]
     end
 
     subgraph drift[<h3>Ineras driftplattform</h3>]
-        subgraph kk[<h4>Kubernetes-kluster</h4>]
-            s(...)
-        end
+        kubernetes(Kubernetes-kluster)
+        Servrar
+        Nätverk
     end
 end
 
@@ -154,29 +155,30 @@ vp --> anp
 vp --> ag
 vp --> ei
 vp --> tak
-siit --> vp
-siit --> siii
-siit --> sifk
-siit --> sifmk
-siit --> sitk
+svodc --> vp
+svodc --> siii
+svodc --> sifk
+svodc --> sifmk
+svodc --> sitk
 vp -- "anropar" --> tprtp
-si -- "driftas på" --> drift
+%%si -- "driftas på" --> s
 tkc --> siit
-itk --> siit
-siit -- "anropar" --> tpas
-siit -- "anropar" --> tpfs
+npo --> siit
+svodc -- "anropar" --> tpas
+svodc -- "anropar" --> tpfs
 tkc --> sias
-itk --> sias
+npo --> sias
 tkc -- "anropar" --> itp
-apim -- "integrerar med" --> sias
+%%gw -- "integrerar med" --> sias
 
-style i fill:#fae1eb,stroke:#000000
+style inera fill:#fae1eb,stroke:#000000
 style si fill:#f9f9f9,stroke:#000000
-
 style tk fill:#F8E5A0
 style tp fill:#F8E5A0
 style ndi fill:#00E5F0
 style sib fill:#00E5F0
+
+gw & vp ~~~s
 tkc~~~itk
 ei~~~kubernetes
 ```
