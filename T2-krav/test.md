@@ -128,8 +128,8 @@ itk --> siit
 siit -- "anropar" --> tpas
 siit -- "anropar" --> tpfs
 tkc --> sias
-npo --> sias
-tkc -- "anropar" --> formular
-gw -.-> formular
-gw -- "integrerar med" --> sias
+itk --> sias
+tkc -- "anropar" --> itp
+si -.-> itp
+apim -- "integrerar med" --> siiam
 ```
