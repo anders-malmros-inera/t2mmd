@@ -1,10 +1,10 @@
 # Bla
 
 ```mermaid
-flowchart LR
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+flowchart TD
+%%{init: {"flowchart": {"defaultRenderer": "dagre"}} }%%
 
-subgraph i["Inera"]
+subgraph inera["Inera"]
     subgraph itk["Inera-klienter"]
         npo(NPÖ)
         itkmm(...)
@@ -12,9 +12,10 @@ subgraph i["Inera"]
     end
 
     subgraph si["Samverkansinfrastrukturen"]
+
         subgraph siit["Inera informationsförsörjning"]
-            svodc(SVOD-tjänst)
-            ehdsc(EHDS-tjänst)
+            svodc(SVOD-tjänst)~~~
+            ehdsc(EHDS-tjänst)~~~
             jc(Invånartjänst)
         end
 
@@ -57,14 +58,6 @@ subgraph i["Inera"]
                 cp7(Integrations- och governance-kapabiliteter)
             end
         end
-
-        cp1 --> gw
-        cp2 --> gw
-        cp4 --> gw
-        cp5 --> gw
-        cp6 --> gw
-        cp7 --> gw
-        gw --> cp3
     end
 
     subgraph itp["Inera-API:er"]
@@ -74,9 +67,9 @@ subgraph i["Inera"]
     end
 
     subgraph drift["Ineras driftplattform"]
-        subgraph kk["Kubernetes-kluster"]
-            s(...)
-        end
+        kubernetes("Kubernetes-kluster")
+        Servrar
+        Nätverk
     end
 end
 
@@ -102,6 +95,13 @@ subgraph sib["Samordnad identitet och behörighet"]
     of(OpenID Federation-profil, oidc.se)
 end
 
+cp1 --> gw
+cp2 --> gw
+cp4 --> gw
+cp5 --> gw
+cp6 --> gw
+cp7 --> gw
+gw --> cp3
 sias -. "realiserar" .-> o2
 sitk -. "modelleras efter" .-> ntk
 siii -. "modelleras efter" .-> pdi
@@ -122,7 +122,7 @@ siit --> sifk
 siit --> sifmk
 siit --> sitk
 vp -- "anropar" --> tprtp
-si -- "driftas på" --> drift
+gw -- "driftas på" --> drift
 tkc --> siit
 itk --> siit
 siit -- "anropar" --> tpas
@@ -130,9 +130,11 @@ siit -- "anropar" --> tpfs
 tkc --> sias
 itk --> sias
 tkc -- "anropar" --> itp
-si -.-> itp
-apim -- "integrerar med" --> siiam
+%%si --> itp
+%%apim -- "integrerar med" --> siiam
+%%gw -- "integrerar med" --> sias
 
+tkc~~~itk
+ei~~~kubernetes
 
-gw -- "integrerar med" --> sias
 ```
