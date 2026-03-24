@@ -134,7 +134,7 @@ si -.-> itp
 apim -- "integrerar med" --> siiam
 
 
-tkc -- "anropar" --> formular
+%%tkc -- "anropar" --> formular
 gw -.-> formular
 gw -- "integrerar med" --> sias
 ```
