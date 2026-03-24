@@ -40,7 +40,7 @@ graph
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
-flowchart 
+graph 
 
 subgraph i[<h1>Inera</b>]
     subgraph itk[<h3>Inera-klienter</h3>]
