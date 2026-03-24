@@ -49,6 +49,13 @@ subgraph i[<h1>Inera</b>]
         journalen(Journalen)
     end
 
+    subgraph siiam[<h3>IAM-komponenter</h3>]
+        sias(Åtkomstintygstjänst)
+        sikk(Klientmetadatakatalog)
+        sir(Inera-resolver)
+    end
+
+
     subgraph si[<h2>Samverkansinfrastrukturen</h2>]
         subgraph siit[<h3>Inera informationsförsörjning</h3>]
             svodc(SVOD-tjänst)
@@ -64,12 +71,6 @@ subgraph i[<h1>Inera</b>]
 
         subgraph si2[<h3>FHIR/BP2.1</h3>]
             sifk(Formatkonverterare)
-        end
-
-        subgraph siiam[<h3>IAM-komponenter</h3>]
-            sias(Åtkomstintygstjänst)
-            sikk(Klientmetadatakatalog)
-            sir(Inera-resolver)
         end
 
         subgraph ntjp[<h3>Nationell tjänsteplattform</h3>]
@@ -167,7 +168,6 @@ siit -- "anropar" --> tpfs
 tkc --> sias
 itk --> sias
 tkc -- "anropar" --> itp
-si -.-> itp
 apim -- "integrerar med" --> siiam
 
 style i fill:#fae1eb,stroke:#000000
