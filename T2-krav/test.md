@@ -132,4 +132,36 @@ itk --> sias
 tkc -- "anropar" --> itp
 si -.-> itp
 apim -- "integrerar med" --> siiam
+
+
+sias -. "realiserar" .-> o2
+sitk -. "modelleras efter" .-> ntk
+siii -. "modelleras efter" .-> pdi
+sikk -. "linjerar med" .-> of
+sir -. "linjerar med" .-> res
+sias --> sir
+sir --> sikk
+ag --> vp
+ag --> ei
+ag --> tak
+vp --> anp
+vp --> ag
+vp --> ei
+vp --> tak
+siit --> vp
+siit --> siii
+siit --> sifk
+siit --> sifmk
+siit --> sitk
+vp -- "anropar" --> tprtp
+si -- "driftas på" --> drift
+tkc --> siit
+itk --> siit
+siit -- "anropar" --> tpas
+siit -- "anropar" --> tpfs
+tkc --> sias
+npo --> sias
+tkc -- "anropar" --> formular
+gw -.-> formular
+gw -- "integrerar med" --> sias
 ```
