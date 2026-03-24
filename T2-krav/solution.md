@@ -3,8 +3,9 @@
 ## Översikt
 
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 graph 
+    %%{init: {"flowchart": {"defaultRenderer": "elk2"}} }%%
+
     subgraph tk[Tjänstekonsument]
         tkc(Klient)
     end
@@ -31,9 +32,7 @@ graph
         tprtp(Regional tjänsteplattform)
         tpfs(FHIR server)
     end
-    %%tk --> si --> tp
-    tkc --> sias
-    sias --> tpas
+    tkc ~~~ si1 & drift & ntjp ~~~ tp
 
 ```
 
