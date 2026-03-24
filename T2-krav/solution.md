@@ -53,52 +53,35 @@ subgraph inera[Inera]
     end
 
 
-    subgraph si[Samverkansinfrastrukturen]
-        subgraph siit[Inera informationsförsörjning]
-            svodc(Syftespecifik aggregerande tjänst)
-            ehdsc(...)
-        end
+    subgraph siit[Inera informationsförsörjning]
+        svodc(Syftespecifik aggregerande tjänst)
+        ehdsc(...)
+    end
 
-        subgraph si1[T2-stödtjänster]
-            sitk(Tjänstekatalog)
-            siii(Informationsindex)
-            sifmk(Federationsmedlemskatalog)
-        end
+    subgraph si1[T2-stödtjänster]
+        sitk(Tjänstekatalog)
+        siii(Informationsindex)
+        sifmk(Federationsmedlemskatalog)
+    end
 
-        subgraph si2[FHIR/BP2.1]
-            sifk(Formatkonverterare)
-        end
+    subgraph si2[FHIR/BP2.1]
+        sifk(Formatkonverterare)
+    end
 
-        subgraph ntjp[Nationell tjänsteplattform]
-            vp(Virtualiseringsplattform)
-            ag(Aggregeringsplattform)
-            anp(Anpassningsplattform)
-            ei(Engagemangsindex)
-            tak(Tjänsteadresseringskatalog)
-        end
+    subgraph ntjp[Nationell tjänsteplattform]
+        vp(Virtualiseringsplattform)
+        ag(Aggregeringsplattform)
+        anp(Anpassningsplattform)
+        ei(Engagemangsindex)
+        tak(Tjänsteadresseringskatalog)
+    end
 
-        subgraph apim[APIM]
-            subgraph dp[Dataplan]
-                gw(API Gateway)
-            end
-            subgraph cp[Kontrollplan]
-                cp1(Utvecklarportal)
-                cp2(API-regelverk)
-                cp3(Uppföljning och analys)
-                cp4(Livscykelhantering)
-                cp5(Anslutning)
-                cp6(Trafikbegränsning)
-                cp7(Integrations- och governance-kapabiliteter)
-            end
-        end
-
-        cp1 --> gw
-        cp2 --> gw
-        cp4 --> gw
-        cp5 --> gw
-        cp6 --> gw
-        cp7 --> gw
-        gw --> cp3
+    subgraph cp[APIM Kontrollplan]
+        direction LR
+        cp3(Uppföljning och analys) 
+        ~~~
+        cp1(Utvecklarportal) & cp2(API-regelverk) & cp4(Livscykelhantering) & cp5(Anslutning) & cp6(Trafikbegränsning) & cp7(Integrations- och governance-kapabiliteter)
+        
     end
 
     subgraph itp[Inera-API:er]
@@ -108,6 +91,7 @@ subgraph inera[Inera]
     end
 
     subgraph drift[Ineras driftplattform]
+        gw(API Gateway)
         kubernetes(Kubernetes-kluster)
         Servrar
         Nätverk
@@ -136,6 +120,14 @@ subgraph sib[Samordnad identitet och behörighet]
     of(OpenID Federation-profil, oidc.se)
 end
 
+cp1 --> gw
+cp2 --> gw
+cp4 --> gw
+cp5 --> gw
+cp6 --> gw
+cp7 --> gw
+gw --> cp3
+
 sias -. "realiserar" .-> o2
 sitk -. "modelleras efter" .-> ntk
 siii -. "modelleras efter" .-> pdi
@@ -163,20 +155,18 @@ svodc -- "anropar" --> tpfs
 tkc --> sias
 npo --> sias
 tkc -- "anropar" --> itp
-%%gw -- "integrerar med" --> sias
-%%si1 & itp & svodc  -. "exponeras via" .->apim
 
 style inera fill:#fae1eb,stroke:#000000
-style si fill:#f9f9f9,stroke:#000000
 style tk fill:#F8E5A0
 style tp fill:#F8E5A0
 style ndi fill:#00E5F0
 style sib fill:#00E5F0
 
 %% Formatting for elk renderer
-tkc~~~itk
+%%tkc~~~itk
 ei~~~kubernetes
+itk~~~kubernetes
 
 %% Formatting for dagre (standard) renderer
-gw~~~~~~sib & ndi & tp
+%%gw~~~~~~sib & ndi & tp
 ```
