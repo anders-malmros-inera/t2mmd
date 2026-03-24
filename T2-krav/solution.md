@@ -143,12 +143,6 @@ subgraph sib[Samordnad identitet och behörighet]
 end
 
 
-%% Connections
-%%PUB --> GW
-%%DEV --> GW
-%%ADM --> GW
-%%KEY --> GW
-%%ANA --> GW
 SC --> PUB
 cp-->GW
 
@@ -191,6 +185,7 @@ style tk fill:#F8E5A0
 style tp fill:#F8E5A0
 style ndi fill:#FFFFFF,stroke:#000000
 style sib fill:#FFFFFF,stroke:#000000
+style KEY stroke-dasharray: 5 5
 
 %% Formatting for elk renderer
 
