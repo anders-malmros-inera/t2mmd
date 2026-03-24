@@ -1,8 +1,8 @@
 # Bla
 
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart TD
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
 subgraph i["Inera"]
     subgraph itk["Inera-klienter"]
