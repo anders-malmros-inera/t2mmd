@@ -37,72 +37,94 @@ graph TB
 ## Detaljerad
 
 ```mermaid
-graph 
+graph TB
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
 subgraph inera[Inera]
-    subgraph itk[Inera-klienter]
-        npo(Syftesspecifik Inera-klient)
-        itkmm(...)
+
+    subgraph app[Teknik - applikation]
+
+        subgraph itk[Inera-klienter]
+            npo(Syftesspecifik Inera-klient)
+            itkmm(...)
+        end
+
+        subgraph siiam[IAM-komponenter]
+            sias(Åtkomstintygstjänst)
+            sikk(Klientmetadatakatalog)
+            sir(Inera-resolver)
+        end
+
+
+        subgraph siit[Inera informationsförsörjning]
+            svodc(Syftespecifik aggregerande tjänst)
+            ehdsc(...)
+        end
+
+        subgraph si1[T2-stödtjänster]
+            sitk(Tjänstekatalog)
+            siii(Informationsindex)
+            sifmk(Federationsmedlemskatalog)
+        end
+
+        subgraph si2[FHIR/BP2.1]
+            sifk(Formatkonverterare)
+        end
+
+        subgraph ntjp[Nationell tjänsteplattform]
+            vp(Virtualiseringsplattform)
+            ag(Aggregeringsplattform)
+            anp(Anpassningsplattform)
+            ei(Engagemangsindex)
+            tak(Tjänsteadresseringskatalog)
+        end
+
+        subgraph itp[Inera-API:er]
+            formular(Formulärtjänsten)
+            itpmm(...)
+            fodelse(Födelseanmälan)
+        end
+
+        subgraph cp[WSO2 Kontrollplan]
+            PUB[API Publisher]
+            DEV[API Developer Portal]
+            ADM[Admin Portal]
+            KEY[Key Manager]
+            ANA[API Analytics]
+            SC[Service Catalog]
+        end
+
     end
 
-    subgraph siiam[IAM-komponenter]
-        sias(Åtkomstintygstjänst)
-        sikk(Klientmetadatakatalog)
-        sir(Inera-resolver)
-    end
+    subgraph infra[Teknik - infrastruktur]
 
+        subgraph drift[Inera drift]
+            kubernetes(Kubernetes-kluster)
+            ~~~
+            Servrar
+            ~~~
+            Databaser
+            ~~~
+            Nätverk
+        end
+    
+        subgraph DP[WSO2 Data Plane]
+            GW[API Gateway]
+            TM[Traffic Manager]
+        end
 
-    subgraph siit[Inera informationsförsörjning]
-        svodc(Syftespecifik aggregerande tjänst)
-        ehdsc(...)
-    end
-
-    subgraph si1[T2-stödtjänster]
-        sitk(Tjänstekatalog)
-        siii(Informationsindex)
-        sifmk(Federationsmedlemskatalog)
-    end
-
-    subgraph si2[FHIR/BP2.1]
-        sifk(Formatkonverterare)
-    end
-
-    subgraph ntjp[Nationell tjänsteplattform]
-        vp(Virtualiseringsplattform)
-        ag(Aggregeringsplattform)
-        anp(Anpassningsplattform)
-        ei(Engagemangsindex)
-        tak(Tjänsteadresseringskatalog)
-    end
-
-    subgraph cp[APIM Kontrollplan]
-        direction LR
-        cp3(Uppföljning och analys) 
-        ~~~
-        cp1(Utvecklarportal) & cp2(API-regelverk) & cp4(Livscykelhantering) & cp5(Anslutning) & cp6(Trafikbegränsning) & cp7(Integrations- och governance-kapabiliteter)
-        
-    end
-
-    subgraph itp[Inera-API:er]
-        formular(Formulärtjänsten)
-        itpmm(...)
-        fodelse(Födelseanmälan)
-    end
-
-    subgraph drift[Ineras driftplattform]
-        gw(API Gateway)
-        kubernetes(Kubernetes-kluster)
-        Servrar
-        Nätverk
+        subgraph IL[WSO2 Integration Layer]
+            MI[Micro Integrator]
+            SI[Streaming Integrator]
+        end
     end
 end
 
-subgraph tk[Tjänstekonsument]
+subgraph tk[Extern tjänstekonsument]
     tkc(Klient)
 end
 
-subgraph tp[Tjänsteproducent]
+subgraph tp[Extern tjänsteproducent]
     tpas(Åtkomstintygstjänst)
     tprtp(Regional tjänsteplattform)
     tpfs(FHIR server)
@@ -120,13 +142,19 @@ subgraph sib[Samordnad identitet och behörighet]
     of(OpenID Federation-profil, oidc.se)
 end
 
-cp1 --> gw
-cp2 --> gw
-cp4 --> gw
-cp5 --> gw
-cp6 --> gw
-cp7 --> gw
-gw --> cp3
+
+%% Connections
+%%PUB --> GW
+%%DEV --> GW
+%%ADM --> GW
+%%KEY --> GW
+%%ANA --> GW
+SC --> PUB
+cp-->GW
+
+GW --> MI
+GW --> SI
+TM --> GW
 
 sias -. "realiserar" .-> o2
 sitk -. "modelleras efter" .-> ntk
@@ -156,17 +184,17 @@ tkc --> sias
 npo --> sias
 tkc -- "anropar" --> itp
 
-style inera fill:#fae1eb,stroke:#000000
+style inera fill:#FFFFFF,stroke:#000000
+style app fill:#76b3e8,stroke:#000000
+style infra fill:#76b3e8,stroke:#000000
 style tk fill:#F8E5A0
 style tp fill:#F8E5A0
-style ndi fill:#00E5F0
-style sib fill:#00E5F0
+style ndi fill:#FFFFFF,stroke:#000000
+style sib fill:#FFFFFF,stroke:#000000
 
 %% Formatting for elk renderer
-ei~~~kubernetes
-itk~~~kubernetes
 
 %% Formatting for dagre (standard) renderer
-gw~~~sib & ndi & tp
+inera~~~~~sib & ndi & tp
 tkc~~~npo
 ```
