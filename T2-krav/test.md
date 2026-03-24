@@ -136,5 +136,5 @@ apim -- "integrerar med" --> siiam
 
 %%tkc -- "anropar" --> formular
 %%gw -.-> formular
-gw -- "integrerar med" --> sias
+%%gw -- "integrerar med" --> sias
 ```
