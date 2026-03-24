@@ -1,6 +1,5 @@
-%%{init: {"flowchart": {"defaultRenderer": "elk"}, "htmlLabels": true} }%%
-
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}, "htmlLabels": true} }%%
 flowchart TD
 
 subgraph i["Inera"]
@@ -40,11 +39,12 @@ subgraph i["Inera"]
             ei(Engagemangsindex)
             tak(Tjänsteadresseringskatalog)
         end
-
+        
         subgraph apim["APIM"]
             subgraph dp["Dataplan"]
                 gw(API Gateway)
             end
+
             subgraph cp["Kontrollplan"]
                 cp1(Utvecklarportal)
                 cp2(API-regelverk)
@@ -126,8 +126,8 @@ itk --> siit
 siit -- "anropar" --> tpas
 siit -- "anropar" --> tpfs
 tkc --> sias
-itk --> sias
-tkc -- "anropar" --> itp
-si -.-> itp
-apim -- "integrerar med" --> siiam
+npo --> sias
+tkc -- "anropar" --> formular
+gw -.-> formular
+gw -- "integrerar med" --> sias
 ```
