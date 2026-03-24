@@ -1,5 +1,5 @@
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}, "htmlLabels": true} }%%
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart TD
 
 subgraph i["Inera"]
