@@ -1,7 +1,7 @@
 # Bla
 
 ```mermaid
-flowchart TD
+flowchart LR
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
 subgraph i["Inera"]
@@ -134,8 +134,5 @@ si -.-> itp
 apim -- "integrerar med" --> siiam
 
 
-%%tkc -- "anropar" --> formular
-%%gw -.-> formular
-%%gw -- "integrerar med" --> sias
-gw ~~~ itp
+gw -- "integrerar med" --> sias
 ```
