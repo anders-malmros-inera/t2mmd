@@ -3,15 +3,14 @@
 ## Översikt
 
 ```mermaid
-graph 
-    %%{init: {"flowchart": {"defaultRenderer": "elk2"}} }%%
-
+graph LR
     subgraph tk[Tjänstekonsument]
         tkc(Klient)
     end
     
 
     subgraph si[Samverkansinfrastrukturen]
+        direction TB
         subgraph si1[Komponenter]
             sias(Åtkomstintygstjänst) & sitk(Tjänstekatalog) & siagg(Aggregerande tjänst)
             ~~~
@@ -32,7 +31,6 @@ graph
         tprtp(Regional tjänsteplattform)
         tpfs(FHIR server)
     end
-    tkc ~~~ si1 & drift & ntjp ~~~ tp
 
 ```
 
