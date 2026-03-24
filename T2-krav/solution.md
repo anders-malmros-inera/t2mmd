@@ -38,7 +38,7 @@ graph TB
 
 ```mermaid
 graph 
-%%{init: {"flowchart": {"defaultRenderer": "elk2"}} }%%
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
 subgraph inera[Inera]
     subgraph itk[Inera-klienter]
