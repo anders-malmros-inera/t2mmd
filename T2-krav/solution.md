@@ -3,7 +3,7 @@
 ## Översikt
 
 ```mermaid
-graph LR
+graph TB
     subgraph tk[Tjänstekonsument]
         tkc(Klient)
     end
@@ -31,7 +31,7 @@ graph LR
         tprtp(Regional tjänsteplattform)
         tpfs(FHIR server)
     end
-
+    tk ~~~ si ~~~ tp
 ```
 
 ## Detaljerad
