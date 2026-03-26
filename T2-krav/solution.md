@@ -130,12 +130,12 @@ subgraph tp[Extern tjänsteproducent]
     tpfs(FHIR server)
 end
 
-subgraph ndi[Nationell Digital Infrastruktur]
+subgraph ndi[Nationell Digital Infrastruktur, EHM]
     ntk(Nationell tjänstekatalog)
     pdi(Patientdataindex)
 end
 
-subgraph sib[Samordnad identitet och behörighet]
+subgraph sib[Samordnad identitet och behörighet, Digg]
     res(Resolver)
     oi(OpenID Connect-profil, oidc.se)
     o2(OAuth2-profil, Ena)

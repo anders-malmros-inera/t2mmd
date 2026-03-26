@@ -1,3 +1,4 @@
+```mermaid
 %%{init: { 'sequence': {'noteAlign': 'left'} }}%%
 sequenceDiagram
 participant c as Client
@@ -10,3 +11,4 @@ c->>p2: fetch attachment from vis.region.se
 note over p2: GET /filer/a.pdf HTTP/1.1<br>Host: vis.region.se<br>Accept: application/pdf<br>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5...
 p2-->>c: HTTP/1.1 200 OK
 note over c: Content-Type: application/pdf<br>Content-Length: 12345<br>Date: Tue, 20 Feb 2024 12:00:00 GMT<br><br>%PDF-1.4<br>%âãÏÓ<br>...
+```

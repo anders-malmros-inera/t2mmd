@@ -1,6 +1,0 @@
-```mermaid
-flowchart LR
-t2ark--"design av"-->apikatalog & federationsmedlemskatalog
-rolf-.äger.->t2ark & apikatalog & federationsmedlemskatalog
-gustav-.implementerar.->apikatalog & federationsmedlemskatalog
-```
