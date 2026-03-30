@@ -34,7 +34,6 @@ graph TB
     tk ~~~ si ~~~ tp
 ```
 
-## Detaljerad
 
 ```mermaid
 graph TB
@@ -45,8 +44,9 @@ subgraph inera[Inera]
     subgraph app[Teknik - applikation]
 
         subgraph itk[Inera-klienter]
-            npo(Syftesspecifik Inera-klient)
-            itkmm(...)
+            itk1(Annan syftesspecifik<br>Inera-tjänst)
+            itk2(NPÖ)
+            itk3(Journalen)
         end
 
         subgraph siiam[IAM-komponenter]
@@ -55,10 +55,8 @@ subgraph inera[Inera]
             sir(Inera-resolver)
         end
 
-
-        subgraph siit[Inera informationsförsörjning]
-            svodc(Syftespecifik aggregerande tjänst)
-            ehdsc(...)
+        subgraph siit[Informationsförsörjning]
+            svodc(Aggregerande tjänst)
         end
 
         subgraph si1[T2-stödtjänster]
@@ -80,9 +78,10 @@ subgraph inera[Inera]
         end
 
         subgraph itp[Inera-API:er]
-            formular(Formulärtjänsten)
-            itpmm(...)
-            fodelse(Födelseanmälan)
+            itp1(Formulärtjänsten)
+            itp2(Födelseanmälan)
+            itp3(Annat syftespecifikt<br>Inera-API)
+            itp4(EHDS-brygga)
         end
 
         subgraph cp[WSO2 Kontrollplan]
@@ -150,11 +149,11 @@ GW --> MI
 GW --> SI
 TM --> GW
 
-sias -. "realiserar" .-> o2
-sitk -. "modelleras efter" .-> ntk
-siii -. "modelleras efter" .-> pdi
-sikk -. "linjerar med" .-> of
-sir -. "linjerar med" .-> res
+sias -.-> o2
+sitk -.-> ntk
+siii -.-> pdi
+sikk -.-> of
+sir -.-> res
 sias --> sir
 sir --> sikk
 ag --> vp
@@ -169,14 +168,13 @@ svodc --> siii
 svodc --> sifk
 svodc --> sifmk
 svodc --> sitk
-vp -- "anropar" --> tprtp
-tkc --> svodc
-npo --> svodc
-svodc -- "anropar" --> tpas
-svodc -- "anropar" --> tpfs
+vp ----> tprtp
+tkc --> itp1 & itp2 & itp3 & itp4  --> svodc
+itk1 & itk2 & itk3 --> svodc
+svodc --> tpas
+svodc --> tpfs
 tkc --> sias
-npo --> sias
-tkc -- "anropar" --> itp
+itk1 & itk2 & itk3 --> sias
 
 style inera fill:#FFFFFF,stroke:#000000
 style app fill:#76b3e8,stroke:#000000
@@ -190,7 +188,7 @@ style KEY stroke-dasharray: 5 5
 %% Formatting for elk renderer
 
 %% Formatting for dagre (standard) renderer
-inera~~~~~sib & ndi & tp
-tkc~~~npo
-tak~~~~~infra
+sias~~~~~~~~~ndi & sib & tp
+tak~~~~GW
+
 ```
