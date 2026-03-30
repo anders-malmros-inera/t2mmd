@@ -43,7 +43,7 @@ subgraph inera[Inera]
 
     subgraph app[Teknik - applikation]
 
-        subgraph itk[Inera-klienter]
+        subgraph itk[Inera-tjänster]
             itk1(Annan syftesspecifik<br>Inera-tjänst)
             itk2(NPÖ)
             itk3(Journalen)
