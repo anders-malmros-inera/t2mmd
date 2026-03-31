@@ -10,7 +10,7 @@ Detta dokument beskriver en komplett målarkitektur för samverkansinfrastruktur
 - interoperabilitet mellan SOAP och FHIR,
 - driftbarhet i modern API- och integrationsplattform.
 
-Arkitekturen baseras på innehållet i `solution.md` och `t2-krav.md`.
+Arkitekturen baseras på innehållet i `solution.md`, `t2-krav.md`, `Krav T2-infrastruktur.docx`, `MVP-indelning Samverkansinfrastrukturen` och `Krav Samverkansinfrastrukturen`.
 
 ---
 
