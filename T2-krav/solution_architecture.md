@@ -53,6 +53,13 @@
 	- [Spårbarhetsvy (kravområde till komponent)](#spårbarhetsvy-kravområde-till-komponent)
 - [13. Kompakta krav per komponent](#13-kompakta-krav-per-komponent)
 	- [13.1 Minimikrav för produktionssättning per komponent](#131-minimikrav-för-produktionssättning-per-komponent)
+- [14. Anslutningsprocess](#14-anslutningsprocess)
+	- [14.1 Roller och ansvarsfördelning](#141-roller-och-ansvarsfördelning)
+	- [14.2 Övergripande processflöde](#142-övergripande-processflöde)
+	- [14.3 Steg per fas](#143-steg-per-fas)
+	- [14.4 Verifiering och certifiering](#144-verifiering-och-certifiering)
+	- [14.5 Samverkansetablering](#145-samverkansetablering)
+	- [14.6 Testinfrastruktur och stöd från Inera](#146-testinfrastruktur-och-stöd-från-inera)
 
 ---
 
@@ -912,3 +919,174 @@ Statusvärden: **Planerad**, **Pågår**, **Klar**.
 - **Resiliens**: R-03/R-04 implementerade för AT och gateway; R-01/R-02 för kataloger/index.
 - **Prestanda**: P95-krav verifierade (P-01/P-03) samt samtidighet/synkkrav (P-02).
 - **Förvaltningsbarhet**: SemVer + publicerade kontrakt (F-01..F-04) och CI/CD-testning (F-05).
+
+---
+
+## 14. Anslutningsprocess
+
+Anslutningsprocessen beskriver hur ett nytt system ansluts till Samverkansinfrastrukturen och grundar sig på
+Ineras generella [Testmodell](https://nordicmedtest.atlassian.net/wiki/spaces/NoWi/pages/647991/2.+Testmodellen) som tagits fram i samarbete med regioner och e-hälsoaktörer.
+Testmodellen betonar en tydlig ansvarsfördelning, en tillitsmodell baserad på självdeklarationer och
+möjligheten för kunder att i stor utsträckning själva verifiera att de uppfyller ställda krav.
+
+### 14.1 Roller och ansvarsfördelning
+
+| Roll | Beskrivning | Kvalitetssäkring |
+|---|---|---|
+| **Tjänstekonsument** | System som initierar informationsutbytet (t.ex. NPÖ, Journalen, vårdinformationssystem) | Verifiering eller certifiering beroende på tjänst och åtkomst till patientuppgifter |
+| **Tjänsteproducent** | System som svarar på konsumentens begäran (t.ex. regional tjänsteplattform, FHIR-server) | Verifiering för att säkerställa hög tillgänglighet och korrekt information |
+| **Inera** | Tillhandahåller infrastruktur, testsviter, mockar, testdata, testmiljöer och support | Godkänner och signerar anslutning |
+
+Ett och samma system kan agera både tjänstekonsument och tjänsteproducent.
+
+### 14.2 Övergripande processflöde
+
+```mermaid
+flowchart TD
+    A([Start – Anslutningsbehov identifierat]) --> B[Fas 1: Förberedelse]
+    B --> C[Fas 2: Teknisk registrering]
+    C --> D{Roll?}
+    D -->|Tjänstekonsument| E[Fas 3a: Konsumentverifiering\neller certifiering]
+    D -->|Tjänsteproducent| F[Fas 3b: Producentverifiering]
+    D -->|Båda| G[Fas 3a + 3b parallellt]
+    E --> H[Fas 4: Samverkansetablering]
+    F --> H
+    G --> H
+    H --> I[Fas 5: Driftsättning och förvaltning]
+    I --> Z([Ansluten])
+```
+
+### 14.3 Steg per fas
+
+#### Fas 1 – Förberedelse
+
+Ansvarig: **Kund** med stöd av Inera.
+
+1. Identifiera vilka tjänster som ska anslutas och i vilken roll (konsument/producent).
+2. Inhämta och granska kravunderlag, tjänstekontraktsbeskrivningar och arkitekturkrav för aktuell tjänst.
+3. Genomföra intern konsekvensanalys avseende säkerhet, juridik (GDPR, PDL) och informationshantering.
+4. Teckna eller verifiera befintligt avtal/regelverk med Inera (RA-01..RA-03).
+5. Utse kontaktperson/ansvarig hos kunden för anslutningsprocessen.
+
+#### Fas 2 – Teknisk registrering
+
+Ansvarig: **Kund** och **Inera gemensamt**.
+
+1. **Federationsmedlemskatalog (FM)**: Kunden registreras som federationsmedlem. Rättslig grund och organisationstillhörighet verifieras.
+2. **Klientmetadatakatalog (KM)**: Klientens tekniska metadata registreras – certifikat/nycklar (mTLS), OAuth2-klientuppgifter och kontaktinformation.
+3. **Tjänstekatalog (TC)**: Aktuell tjänst och dess endpoint registreras (för producenter) alternativt att konsumenten behörighetsprövas mot katalogen.
+4. Kunden erhåller tillgång till testmiljö (ej produktion) och nödvändiga testidentiteter.
+
+#### Fas 3a – Verifiering/certifiering (tjänstekonsument)
+
+Ansvarig: **Kund**, med Inera som granskare.
+
+Processval baseras på tjänstens karaktär:
+
+- **Verifiering (självdeklaration)**: Kunden genomför egentester mot Ineras testsviter och testmiljöer. Fokus på infrastrukturella krav och follows mot tjänstekontraktsbeskrivningarna. Kunden lämnar in testprotokoll och självdeklaration.
+- **Certifiering (Inera-ledd)**: Tillämpas när anslutning ger tillgång till patientuppgifter eller när regelverket kräver certifiering. Inera granskar att juridiska och säkerhetsrelaterade krav uppfylls och att mottagen information hanteras enligt gällande lagar och förordningar.
+
+Granskade artefakter:
+- Testprotokoll från egentest i testmiljö.
+- Självdeklaration (arkitektur, informationshantering, säkerhet, stabilitet).
+- Säkerhetsanalys/DPIA vid tillgång till patientuppgifter.
+
+#### Fas 3b – Verifiering (tjänsteproducent)
+
+Ansvarig: **Kund**, med Inera som granskare.
+
+1. Kunden verifierar att tjänsteproducenten uppfyller tillgänglighetskrav (NFR: 99,9 %/månad) och levererar korrekt information.
+2. Tester körs mot Ineras mock-konsumenter och testsviter.
+3. Lasttest och stabilitetstest genomförs för att verifiera kapacitetskrav.
+4. Svarskvalitet valideras mot tjänstekontraktets scheman och profilkrav (RIV-TA, FHIR-profil).
+
+#### Fas 4 – Samverkansetablering
+
+Ansvarig: **Kund och Inera gemensamt**.
+
+Syftet är att säkerställa att informationsutbytet fungerar *i en driftlik miljö* mellan en specifik tjänstekonsument och en specifik tjänsteproducent.
+
+1. Konsument och producent konfigureras i kataloger och index för samverkan.
+2. Integrationstester genomförs i samverkansmiljö (ej skarp produktion).
+3. Engagemangsindex och Informationsindex uppdateras/synkroniseras korrekt.
+4. Åtkomstintygstjänstens flöden (CC/AC) verifieras end-to-end.
+5. Felisolering och felhantering valideras (partiella svar, timeout, circuit breaker).
+
+#### Fas 5 – Driftsättning och förvaltning
+
+Ansvarig: **Kund** och **Inera Operations**.
+
+1. Slutgodkännande av Inera efter godkänt testprotokoll och självdeklaration/certifikat.
+2. Konfiguration kopieras/promoveras från testmiljö till produktion med godkänd changehantering.
+3. Kunden ansvarar för löpande egentester och att informera Inera vid väsentliga förändringar.
+4. Livscykeln styrs av SemVer-policy: kunden notifieras vid ny major-version och har 18 månader på sig att migrera.
+
+### 14.4 Verifiering och certifiering
+
+```mermaid
+flowchart LR
+    subgraph V[Verifiering – självdeklaration]
+        V1[Kunden kör egentester\nmot Ineras testsviter]
+        V2[Testprotokoll och\nsjälvdeklaration sammanställs]
+        V3[Inera granskar och\ngodkänner deklarationen]
+    end
+    subgraph C[Certifiering – Inera-ledd]
+        C1[Inera genomför eller\ngranskar tester]
+        C2[Juridisk/säkerhetsgranskning\navseende patientuppgifter]
+        C3[Certifikat utfärdas]
+    end
+
+    TK[Tjänstekonsument] -->|Ej patientuppgifter<br/>eller certifieringskrav| V
+    TK -->|Tillgång till patientuppgifter<br/>eller certifieringskrav| C
+    TP[Tjänsteproducent] --> V
+```
+
+| Kvalitetssäkringstyp | Tillämpas för | Fokusområden |
+|---|---|---|
+| **Verifiering** | Konsument (ej känslig data), alla producenter | Infrastrukturkrav, tjänstekontrakt, tillgänglighet |
+| **Certifiering** | Konsument med tillgång till patientuppgifter | Juridik (PDL/GDPR), säkerhet, informationshantering, regelefterlevnad |
+
+### 14.5 Samverkansetablering
+
+Samverkansetablering är den fas där konsument och producent verifierar informationsutbytet *gemensamt* i en driftlik miljö – i linje med testmodellens krav på att etablering av samverkan genomförs för att säkerställa att informationsutbyte kan ske.
+
+```mermaid
+sequenceDiagram
+    participant K  as Tjänstekonsument
+    participant I  as Inera (SI)
+    participant P  as Tjänsteproducent
+
+    K->>I: Registrera i FM, KM, TC
+    P->>I: Registrera endpoint i TC / II
+    I->>I: Synkronisera kataloger och index
+    K->>I: Begär åtkomstintyg (ÅT/ATS)
+    I-->>K: Åtkomstintyg utfärdat
+    K->>I: Anropa tjänst via API Gateway
+    I->>P: Vidarebefordra anrop
+    P-->>I: Returnera svar
+    I-->>K: Aggregerat/konverterat svar
+    Note over K,P: Samverkansetablering godkänd
+```
+
+### 14.6 Testinfrastruktur och stöd från Inera
+
+Inera tillhandahåller följande stöd under anslutningsprocessen:
+
+| Resurskategori | Innehåll |
+|---|---|
+| **Testsviter** | Automatiserade kontraktstester mot tjänsteproducenter och konsumenter |
+| **Mockar** | Mock-konsumenter och mock-producenter för isolerad test av respektive roll |
+| **Testdata** | Syntetsiska patientidentiteter och informationsunderlag för realistisk test utan risk |
+| **Testmiljöer** | Separata miljöer för komponenttest, integrationstest och samverkansetablering |
+| **Dokumentation** | Tjänstekontraktsbeskrivningar, arkitekturkrav, profilbeskrivningar och instruktioner |
+| **Support** | Teknisk support och rådgivning under hela anslutningsprocessen |
+
+Anslutningsprocessen mappas mot MVP-planen (sektion 11) enligt:
+
+| Anslutningsfas | Kräver MVP-nivå |
+|---|---|
+| Teknisk registrering (FM, KM, TC) | MVP 1 |
+| Åtkomstflöde och verifiering (ÅT) | MVP 1 |
+| Informationsförsörjning och samverkansetablering | MVP 2 |
+| Strömmade svar och robust felhantering | MVP 3 |
+| Standardiserad onboarding, full observability | MVP 4 |
