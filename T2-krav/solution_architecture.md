@@ -3,57 +3,56 @@
 ## Innehåll
 
 - [1. Syfte och omfattning](#1-syfte-och-omfattning)
+	- [Intressentvy](#intressentvy)
 - [2. Arkitekturprinciper](#2-arkitekturprinciper)
 - [3. Konceptuell målbild](#3-konceptuell-målbild)
-  - [3.1 Detaljerad referensmålbild (från solution.md)](#31-detaljerad-referensmålbild-från-solutionmd)
-  - [3.2 Nyckelkopplingar i den detaljerade målbilden](#32-nyckelkopplingar-i-den-detaljerade-målbilden)
+	- [3.1 Detaljerad referensmålbild (från solution.md)](#31-detaljerad-referensmålbild-från-solutionmd)
+	- [3.2 Nyckelkopplingar i den detaljerade målbilden](#32-nyckelkopplingar-i-den-detaljerade-målbilden)
+	- [Affärs- och förmågevy](#affärs--och-förmågevy)
 - [4. Byggblock och ansvar](#4-byggblock-och-ansvar)
-  - [4.1 Tjänstekonsument](#41-tjänstekonsument)
-  - [4.2 Tillitshantering och åtkomst](#42-tillitshantering-och-åtkomst)
-  - [4.3 Lös koppling](#43-lös-koppling)
-  - [4.4 Datainhämtning och transformation](#44-datainhämtning-och-transformation)
-  - [4.5 Exponering, styrning och drift](#45-exponering-styrning-och-drift)
-  - [4.6 Externa beroenden och linjering](#46-externa-beroenden-och-linjering)
+	- [Logisk vy (containers)](#logisk-vy-containers)
+	- [4.1 Tjänstekonsument](#41-tjänstekonsument)
+	- [4.2 Tillitshantering och åtkomst](#42-tillitshantering-och-åtkomst)
+	- [4.3 Lös koppling](#43-lös-koppling)
+	- [4.4 Datainhämtning och transformation](#44-datainhämtning-och-transformation)
+	- [4.5 Exponering, styrning och drift](#45-exponering-styrning-och-drift)
+	- [4.6 Externa beroenden och linjering](#46-externa-beroenden-och-linjering)
 - [5. Huvudflöden](#5-huvudflöden)
-  - [5.1 Flöde A – Anropa tjänst med åtkomstintyg](#51-flöde-a--anropa-tjänst-med-åtkomstintyg)
-  - [5.2 Flöde B – Katalogsynkronisering (central/lokal)](#52-flöde-b--katalogsynkronisering-centrallokal)
-  - [5.3 Flöde C – Informationsförsörjning (aggregerat/strömmat)](#53-flöde-c--informationsförsörjning-aggregeratströmmat)
+	- [Processöversikt (E2E)](#processöversikt-e2e)
+	- [5.1 Flöde A – Anropa tjänst med åtkomstintyg](#51-flöde-a--anropa-tjänst-med-åtkomstintyg)
+	- [5.2 Flöde B – Katalogsynkronisering (central/lokal)](#52-flöde-b--katalogsynkronisering-centrallokal)
+	- [5.3 Flöde C – Informationsförsörjning (aggregerat/strömmat)](#53-flöde-c--informationsförsörjning-aggregeratströmmat)
 - [6. Säkerhetsarkitektur](#6-säkerhetsarkitektur)
-  - [6.1 Tillitsmodell](#61-tillitsmodell)
-  - [6.2 Kontrollpunkter](#62-kontrollpunkter)
-  - [6.3 Profilering och standardlinjering](#63-profilering-och-standardlinjering)
+	- [6.1 Tillitsmodell](#61-tillitsmodell)
+	- [6.2 Kontrollpunkter](#62-kontrollpunkter)
+	- [6.3 Profilering och standardlinjering](#63-profilering-och-standardlinjering)
+	- [Säkerhetsvy (tillit och kontroller)](#säkerhetsvy-tillit-och-kontroller)
 - [7. Informations- och integrationsarkitektur](#7-informations--och-integrationsarkitektur)
-  - [7.1 Canonical och kontrakt](#71-canonical-och-kontrakt)
-  - [7.2 Integrationsmönster](#72-integrationsmönster)
+	- [7.1 Canonical och kontrakt](#71-canonical-och-kontrakt)
+	- [7.2 Integrationsmönster](#72-integrationsmönster)
+	- [Datavy (informationsobjekt)](#datavy-informationsobjekt)
 - [8. Drift- och plattformsarkitektur](#8-drift--och-plattformsarkitektur)
-  - [8.1 Logisk driftmodell](#81-logisk-driftmodell)
-  - [8.2 Infrastruktur](#82-infrastruktur)
-  - [8.3 Tillgänglighet och robusthet](#83-tillgänglighet-och-robusthet)
+	- [8.1 Logisk driftmodell](#81-logisk-driftmodell)
+	- [8.2 Infrastruktur](#82-infrastruktur)
+	- [8.3 Tillgänglighet och robusthet](#83-tillgänglighet-och-robusthet)
+	- [Implementationsvy (tekniska byggblock)](#implementationsvy-tekniska-byggblock)
+	- [Distributionsvy (drift och zoner)](#distributionsvy-drift-och-zoner)
 - [9. Icke-funktionella krav (NFR)](#9-icke-funktionella-krav-nfr)
-  - [9.1 Säkerhet och regelefterlevnad](#91-säkerhet-och-regelefterlevnad)
-  - [9.2 Prestanda](#92-prestanda)
-  - [9.3 Förvaltning och förändringsbarhet](#93-förvaltning-och-förändringsbarhet)
-  - [9.4 Tillgänglighet, robusthet och skalbarhet](#94-tillgänglighet-robusthet-och-skalbarhet)
-  - [9.5 Dataintegritet och observerbarhet](#95-dataintegritet-och-observerbarhet)
+	- [9.1 Säkerhet och regelefterlevnad](#91-säkerhet-och-regelefterlevnad)
+	- [9.2 Prestanda](#92-prestanda)
+	- [9.3 Förvaltning och förändringsbarhet](#93-förvaltning-och-förändringsbarhet)
+	- [9.4 Tillgänglighet, robusthet och skalbarhet](#94-tillgänglighet-robusthet-och-skalbarhet)
+	- [9.5 Dataintegritet och observerbarhet](#95-dataintegritet-och-observerbarhet)
+	- [NFR-översikt (målnivåer)](#nfr-översikt-målnivåer)
 - [10. Beslutslista (ADR-kandidater)](#10-beslutslista-adr-kandidater)
 - [11. MVP-indelning och införandeplan](#11-mvp-indelning-och-införandeplan)
 - [12. Spårbarhet till kravunderlag](#12-spårbarhet-till-kravunderlag)
-  - [12.1 Spårbarhet – användningskrav (CSV)](#121-spårbarhet--användningskrav-csv)
-  - [12.2 Spårbarhet – systemkrav (CSV)](#122-spårbarhet--systemkrav-csv)
-  - [12.3 Tolkningar och öppna punkter från kravunderlag](#123-tolkningar-och-öppna-punkter-från-kravunderlag)
+	- [12.1 Spårbarhet – användningskrav (CSV)](#121-spårbarhet--användningskrav-csv)
+	- [12.2 Spårbarhet – systemkrav (CSV)](#122-spårbarhet--systemkrav-csv)
+	- [12.3 Tolkningar och öppna punkter från kravunderlag](#123-tolkningar-och-öppna-punkter-från-kravunderlag)
+	- [Spårbarhetsvy (kravområde till komponent)](#spårbarhetsvy-kravområde-till-komponent)
 - [13. Kompakta krav per komponent](#13-kompakta-krav-per-komponent)
-  - [13.1 Minimikrav för produktionssättning per komponent](#131-minimikrav-för-produktionssättning-per-komponent)
-- [14. Visuella vyer för samtliga arkitekturområden](#14-visuella-vyer-för-samtliga-arkitekturområden)
-  - [14.1 Intressentvy](#141-intressentvy)
-  - [14.2 Affärs- och förmågevy](#142-affärs--och-förmågevy)
-  - [14.3 Logisk vy (containers)](#143-logisk-vy-containers)
-  - [14.4 Processvy (E2E)](#144-processvy-e2e)
-  - [14.5 Implementationsvy (tekniska byggblock)](#145-implementationsvy-tekniska-byggblock)
-  - [14.6 Distributionsvy (drift och zoner)](#146-distributionsvy-drift-och-zoner)
-  - [14.7 Säkerhetsvy (tillit och kontroller)](#147-säkerhetsvy-tillit-och-kontroller)
-  - [14.8 Datavy (informationsobjekt)](#148-datavy-informationsobjekt)
-  - [14.9 NFR-vy (målnivåer)](#149-nfr-vy-målnivåer)
-  - [14.10 Spårbarhetsvy (kravområde till komponent)](#1410-spårbarhetsvy-kravområde-till-komponent)
+	- [13.1 Minimikrav för produktionssättning per komponent](#131-minimikrav-för-produktionssättning-per-komponent)
 
 ---
 
@@ -68,6 +67,24 @@ Detta dokument beskriver en komplett målarkitektur för samverkansinfrastruktur
 - driftbarhet i modern API- och integrationsplattform.
 
 Arkitekturen baseras på innehållet i `solution.md`, `t2-krav.md`, `Krav T2-infrastruktur.docx`, `MVP-indelning Samverkansinfrastrukturen` och `Krav Samverkansinfrastrukturen`.
+
+### Intressentvy
+
+```mermaid
+graph LR
+	I[Inera produktägare] --> Mål[Samverkansinfrastrukturens mål]
+	V[Verksamhet/vårdgivare] --> Mål
+	K[Tjänstekonsumenter] --> Mål
+	P[Tjänsteproducenter] --> Mål
+	D[Drift/Operations] --> Mål
+	S[Säkerhet/Compliance] --> Mål
+	N[Nationella aktörer<br/>EHM/Digg] --> Mål
+
+	Mål --> A1[Säker åtkomst]
+	Mål --> A2[Lös koppling]
+	Mål --> A3[Informationsförsörjning]
+	Mål --> A4[Hög tillgänglighet]
+```
 
 ---
 
@@ -297,9 +314,49 @@ tak~~~~GW
 - Aggregerande tjänst fungerar som nav mot både T2-stödtjänster och producentlandskap.
 - WSO2 Kontrollplan styr API-livscykel och policy, medan Data Plane/Integration Layer hanterar trafik och integration.
 
+### Affärs- och förmågevy
+
+```mermaid
+graph TB
+	subgraph Affärsförmågor
+		F1[Tillitsetablering]
+		F2[Tjänsteupptäckt]
+		F3[Åtkomstkontroll]
+		F4[Datainhämtning]
+		F5[Aggregering/strömning]
+		F6[Interoperabilitet SOAP/FHIR]
+		F7[Förvaltning och drift]
+	end
+
+	F1 --> F3
+	F2 --> F4
+	F4 --> F5
+	F5 --> F6
+	F3 --> F4
+	F7 --> F1
+	F7 --> F2
+	F7 --> F3
+	F7 --> F4
+```
+
 ---
 
 ## 4. Byggblock och ansvar
+
+### Logisk vy (containers)
+
+```mermaid
+graph LR
+	C[Klient] --> ATS[Åtkomstintygstjänst]
+	C --> TK[Tjänstekatalog]
+	C --> AT[Aggregerande tjänst]
+	ATS --> FM[Federationsmedlemskatalog]
+	ATS --> KM[Klientmetadatakatalog]
+	AT --> II[Informationsindex]
+	AT --> FK[Formatkonverterare]
+	AT --> GW[API Gateway]
+	GW --> TP[Producent-API:er]
+```
 
 ### 4.1 Tjänstekonsument
 
@@ -365,6 +422,18 @@ tak~~~~GW
 ---
 
 ## 5. Huvudflöden
+
+### Processöversikt (E2E)
+
+```mermaid
+flowchart LR
+	S1[1. Hitta tjänst i katalog] --> S2[2. Begär åtkomstintyg]
+	S2 --> S3[3. Validera medlemskap + metadata]
+	S3 --> S4[4. Anropa API/aggregerande tjänst]
+	S4 --> S5[5. Hämta från flera producenter]
+	S5 --> S6[6. Konvertera/aggregera]
+	S6 --> S7[7. Returnera synkront eller SSE]
+```
 
 ### 5.1 Flöde A – Anropa tjänst med åtkomstintyg
 
@@ -477,6 +546,23 @@ sequenceDiagram
 - Federation-/resolvermönster för tillitsuppslag.
 - Katalog- och indexmodeller linjerade med nationella motsvarigheter.
 
+### Säkerhetsvy (tillit och kontroller)
+
+```mermaid
+graph LR
+	K[Klient] -->|mTLS/OAuth2| ATS[Åtkomstintygstjänst]
+	ATS -->|Federationskontroll| FM[Federationsmedlemskatalog]
+	ATS -->|Nycklar/metadata| KM[Klientmetadatakatalog]
+	ATS -->|JWT access token| K
+	K -->|Bearer token| GW[API Gateway]
+	GW -->|JWT validering JWKS/issuer| V[Valideringspolicy]
+	GW --> API[Skyddat API]
+
+	V --> C1[Least privilege scope-kontroll]
+	V --> C2[Rate limiting/WAF/schema-validering]
+	API --> C3[Auditlogg + traceparent]
+```
+
 ---
 
 ## 7. Informations- och integrationsarkitektur
@@ -493,6 +579,57 @@ sequenceDiagram
 - Parallell datainhämtning för minskad total svarstid.
 - Strömmat delsvar för tidig tillgång till delmängder.
 - Aggregerat slutsvar för komplett sammanställning.
+
+### Datavy (informationsobjekt)
+
+```mermaid
+classDiagram
+	class Federationsmedlem {
+	  +memberId
+	  +juridiskGrund
+	  +giltigFrom
+	  +giltigTom
+	  +status
+	}
+
+	class Klientmetadata {
+	  +clientId
+	  +orgId
+	  +jwksCertRef
+	  +scopes
+	  +giltighet
+	}
+
+	class Tjanstemetadata {
+	  +serviceId
+	  +logiskAdress
+	  +interopSpec
+	  +authMethods
+	  +supportsSSE
+	}
+
+	class Indexpost {
+	  +subjectId
+	  +logiskAdressat
+	  +informationstyp
+	  +informationsagare
+	  +status
+	  +createdAt
+	  +updatedAt
+	}
+
+	class Atkomstintyg {
+	  +issuer
+	  +subject
+	  +audience
+	  +scopes
+	  +exp
+	}
+
+	Federationsmedlem "1" --> "*" Klientmetadata : omfattar
+	Klientmetadata "1" --> "*" Atkomstintyg : utfärdar
+	Tjanstemetadata "1" --> "*" Indexpost : beskriver tillgång
+```
 
 ---
 
@@ -521,7 +658,82 @@ Kontrollplan och dataplan/integrationslager realiseras enligt referensupplägg i
 - Horisontell skalning av gateway och aggregerande tjänst.
 - Tydliga timeout-, retry- och circuit breaker-strategier mot producent-API:er.
 - Degraderingsläge vid partiella producentfel (fortsatt strömmat/partiellt svar där policy tillåter).
+### Implementationsvy (tekniska byggblock)
 
+```mermaid
+graph TB
+	subgraph Applikation
+		ATS[Åtkomstintygstjänst]
+		TK[Tjänstekatalog]
+		KM[Klientmetadatakatalog]
+		FM[Federationsmedlemskatalog]
+		II[Informationsindex]
+		AT[Aggregerande tjänst]
+		FK[Formatkonverterare]
+	end
+
+	subgraph Plattform
+		CP[WSO2 Kontrollplan]
+		DP[WSO2 Data Plane]
+		IL[WSO2 Integration Layer]
+	end
+
+	subgraph Data
+		DB[(Metadata- och indexdatabaser)]
+		LOG[(Audit- och observability-lager)]
+	end
+
+	ATS --> DB
+	TK --> DB
+	KM --> DB
+	FM --> DB
+	II --> DB
+	AT --> DP
+	FK --> IL
+	CP --> DP
+	DP --> LOG
+	IL --> LOG
+```
+
+### Distributionsvy (drift och zoner)
+
+```mermaid
+graph TB
+	subgraph Internet/Extern zon
+		EC[Externa klienter]
+		EP[Externa producenter]
+	end
+
+	subgraph DMZ/API-zon
+		GW[API Gateway]
+		TM[Traffic Manager]
+	end
+
+	subgraph Applikationszon
+		ATS[Åtkomstintygstjänst]
+		AT[Aggregerande tjänst]
+		TK[Tjänstekatalog]
+		II[Informationsindex]
+		FK[Formatkonverterare]
+	end
+
+	subgraph Datzon
+		DB[(Databaser)]
+		MQ[(Event/stream-buffert)]
+	end
+
+	EC --> GW
+	EP --> GW
+	GW --> ATS
+	GW --> AT
+	GW --> TK
+	GW --> II
+	AT --> FK
+	ATS --> DB
+	TK --> DB
+	II --> DB
+	AT --> MQ
+```
 ---
 
 ## 9. Icke-funktionella krav (NFR)
@@ -565,6 +777,20 @@ Kontrollplan och dataplan/integrationslager realiseras enligt referensupplägg i
 - Synkintegritet ska verifieras med checksummor/digests/signaturer.
 - Strukturerade loggar, metrics, tracing och korrelations-id (traceparent) ska vara end-to-end.
 - Larm ska utlösas på definierade trösklar för latens, felkvot och ködjup.
+
+### NFR-översikt (målnivåer)
+
+```mermaid
+graph TB
+	NFR[NFR-målnivåer]
+
+	NFR --> T[ Tillgänglighet<br/>99,9% / månad ]
+	NFR --> P[ Prestanda<br/>Katalog P95 <= 500 ms<br/>Token P95 <= 300 ms ]
+	NFR --> R[ Robusthet<br/>Delta-synk <= 5 min<br/>Full synk <= 30 min ]
+	NFR --> S[ Säkerhet<br/>TLS 1.2+ / Least privilege / OWASP API Top 10 ]
+	NFR --> SK[ Skalbarhet<br/>1000 samtidiga anrop<br/>Horisontell autoskalning ]
+	NFR --> O[ Observerbarhet<br/>Loggar + metrics + tracing + larm ]
+```
 
 ---
 
@@ -645,6 +871,21 @@ Kontrollplan och dataplan/integrationslager realiseras enligt referensupplägg i
 - I systemkravslistan finns dubbel-ID för P-02; tolkning i detta dokument är att båda prestandakraven gäller (1000 samtidiga förfrågningar samt 5 min inkrementell synk).
 - RE-02 anger profiler utan uttömmande lista; arkitekturen utgår från Ena OAuth2-profil, OIDC/OAuth2-profiler samt RIV-TA.
 
+### Spårbarhetsvy (kravområde till komponent)
+
+```mermaid
+graph LR
+	LK[Lös koppling] --> TK[Tjänstekatalog]
+	TH[Tillitshantering] --> ATS[Åtkomstintygstjänst]
+	TH --> KM[Klientmetadatakatalog]
+	RA[Regel/avtal] --> FM[Federationsmedlemskatalog]
+	D[Datainhämtning] --> AT[Aggregerande tjänst]
+	D --> II[Informationsindex]
+	D --> FK[Formatkonverterare]
+	S[Säkerhet] --> GW[API Gateway]
+	O[Övervakning] --> OBS[Observability-plattform]
+```
+
 ---
 
 ## 13. Kompakta krav per komponent
@@ -671,253 +912,3 @@ Statusvärden: **Planerad**, **Pågår**, **Klar**.
 - **Resiliens**: R-03/R-04 implementerade för AT och gateway; R-01/R-02 för kataloger/index.
 - **Prestanda**: P95-krav verifierade (P-01/P-03) samt samtidighet/synkkrav (P-02).
 - **Förvaltningsbarhet**: SemVer + publicerade kontrakt (F-01..F-04) och CI/CD-testning (F-05).
-
----
-
-## 14. Visuella vyer för samtliga arkitekturområden
-
-### 14.1 Intressentvy
-
-```mermaid
-graph LR
-	I[Inera produktägare] --> Mål[Samverkansinfrastrukturens mål]
-	V[Verksamhet/vårdgivare] --> Mål
-	K[Tjänstekonsumenter] --> Mål
-	P[Tjänsteproducenter] --> Mål
-	D[Drift/Operations] --> Mål
-	S[Säkerhet/Compliance] --> Mål
-	N[Nationella aktörer<br/>EHM/Digg] --> Mål
-
-	Mål --> A1[Säker åtkomst]
-	Mål --> A2[Lös koppling]
-	Mål --> A3[Informationsförsörjning]
-	Mål --> A4[Hög tillgänglighet]
-```
-
-### 14.2 Affärs- och förmågevy
-
-```mermaid
-graph TB
-	subgraph Affärsförmågor
-		F1[Tillitsetablering]
-		F2[Tjänsteupptäckt]
-		F3[Åtkomstkontroll]
-		F4[Datainhämtning]
-		F5[Aggregering/strömning]
-		F6[Interoperabilitet SOAP/FHIR]
-		F7[Förvaltning och drift]
-	end
-
-	F1 --> F3
-	F2 --> F4
-	F4 --> F5
-	F5 --> F6
-	F3 --> F4
-	F7 --> F1
-	F7 --> F2
-	F7 --> F3
-	F7 --> F4
-```
-
-### 14.3 Logisk vy (containers)
-
-```mermaid
-graph LR
-	C[Klient] --> ATS[Åtkomstintygstjänst]
-	C --> TK[Tjänstekatalog]
-	C --> AT[Aggregerande tjänst]
-	ATS --> FM[Federationsmedlemskatalog]
-	ATS --> KM[Klientmetadatakatalog]
-	AT --> II[Informationsindex]
-	AT --> FK[Formatkonverterare]
-	AT --> GW[API Gateway]
-	GW --> TP[Producent-API:er]
-```
-
-### 14.4 Processvy (E2E)
-
-```mermaid
-flowchart LR
-	S1[1. Hitta tjänst i katalog] --> S2[2. Begär åtkomstintyg]
-	S2 --> S3[3. Validera medlemskap + metadata]
-	S3 --> S4[4. Anropa API/aggregerande tjänst]
-	S4 --> S5[5. Hämta från flera producenter]
-	S5 --> S6[6. Konvertera/aggreggera]
-	S6 --> S7[7. Returnera synkront eller SSE]
-```
-
-### 14.5 Implementationsvy (tekniska byggblock)
-
-```mermaid
-graph TB
-	subgraph Applikation
-		ATS[Åtkomstintygstjänst]
-		TK[Tjänstekatalog]
-		KM[Klientmetadatakatalog]
-		FM[Federationsmedlemskatalog]
-		II[Informationsindex]
-		AT[Aggregerande tjänst]
-		FK[Formatkonverterare]
-	end
-
-	subgraph Plattform
-		CP[WSO2 Kontrollplan]
-		DP[WSO2 Data Plane]
-		IL[WSO2 Integration Layer]
-	end
-
-	subgraph Data
-		DB[(Metadata- och indexdatabaser)]
-		LOG[(Audit- och observability-lager)]
-	end
-
-	ATS --> DB
-	TK --> DB
-	KM --> DB
-	FM --> DB
-	II --> DB
-	AT --> DP
-	FK --> IL
-	CP --> DP
-	DP --> LOG
-	IL --> LOG
-```
-
-### 14.6 Distributionsvy (drift och zoner)
-
-```mermaid
-graph TB
-	subgraph Internet/Extern zon
-		EC[Externa klienter]
-		EP[Externa producenter]
-	end
-
-	subgraph DMZ/API-zon
-		GW[API Gateway]
-		TM[Traffic Manager]
-	end
-
-	subgraph Applikationszon
-		ATS[Åtkomstintygstjänst]
-		AT[Aggregerande tjänst]
-		TK[Tjänstekatalog]
-		II[Informationsindex]
-		FK[Formatkonverterare]
-	end
-
-	subgraph Datzon
-		DB[(Databaser)]
-		MQ[(Event/stream-buffert)]
-	end
-
-	EC --> GW
-	EP --> GW
-	GW --> ATS
-	GW --> AT
-	GW --> TK
-	GW --> II
-	AT --> FK
-	ATS --> DB
-	TK --> DB
-	II --> DB
-	AT --> MQ
-```
-
-### 14.7 Säkerhetsvy (tillit och kontroller)
-
-```mermaid
-graph LR
-	K[Klient] -->|mTLS/OAuth2| ATS[Åtkomstintygstjänst]
-	ATS -->|Federationskontroll| FM[Federationsmedlemskatalog]
-	ATS -->|Nycklar/metadata| KM[Klientmetadatakatalog]
-	ATS -->|JWT access token| K
-	K -->|Bearer token| GW[API Gateway]
-	GW -->|JWT validering JWKS/issuer| V[Valideringspolicy]
-	GW --> API[Skyddat API]
-
-	V --> C1[Least privilege scope-kontroll]
-	V --> C2[Rate limiting/WAF/schema-validering]
-	API --> C3[Auditlogg + traceparent]
-```
-
-### 14.8 Datavy (informationsobjekt)
-
-```mermaid
-classDiagram
-	class Federationsmedlem {
-	  +memberId
-	  +juridiskGrund
-	  +giltigFrom
-	  +giltigTom
-	  +status
-	}
-
-	class Klientmetadata {
-	  +clientId
-	  +orgId
-	  +jwksCertRef
-	  +scopes
-	  +giltighet
-	}
-
-	class Tjanstemetadata {
-	  +serviceId
-	  +logiskAdress
-	  +interopSpec
-	  +authMethods
-	  +supportsSSE
-	}
-
-	class Indexpost {
-	  +subjectId
-	  +logiskAdressat
-	  +informationstyp
-	  +informationsagare
-	  +status
-	  +createdAt
-	  +updatedAt
-	}
-
-	class Atkomstintyg {
-	  +issuer
-	  +subject
-	  +audience
-	  +scopes
-	  +exp
-	}
-
-	Federationsmedlem "1" --> "*" Klientmetadata : omfattar
-	Klientmetadata "1" --> "*" Atkomstintyg : utfärdar
-	Tjanstemetadata "1" --> "*" Indexpost : beskriver tillgång
-```
-
-### 14.9 NFR-vy (målnivåer)
-
-```mermaid
-graph TB
-	NFR[NFR-målnivåer]
-
-	NFR --> T[ Tillgänglighet<br/>99,9% / månad ]
-	NFR --> P[ Prestanda<br/>Katalog P95 <= 500 ms<br/>Token P95 <= 300 ms ]
-	NFR --> R[ Robusthet<br/>Delta-synk <= 5 min<br/>Full synk <= 30 min ]
-	NFR --> S[ Säkerhet<br/>TLS 1.2+ / Least privilege / OWASP API Top 10 ]
-	NFR --> SK[ Skalbarhet<br/>1000 samtidiga anrop<br/>Horisontell autoskalning ]
-	NFR --> O[ Observerbarhet<br/>Loggar + metrics + tracing + larm ]
-```
-
-### 14.10 Spårbarhetsvy (kravområde till komponent)
-
-```mermaid
-graph LR
-	LK[Lös koppling] --> TK[Tjänstekatalog]
-	TH[Tillitshantering] --> ATS[Åtkomstintygstjänst]
-	TH --> KM[Klientmetadatakatalog]
-	RA[Regel/avtal] --> FM[Federationsmedlemskatalog]
-	D[Datainhämtning] --> AT[Aggregerande tjänst]
-	D --> II[Informationsindex]
-	D --> FK[Formatkonverterare]
-	S[Säkerhet] --> GW[API Gateway]
-	O[Övervakning] --> OBS[Observability-plattform]
-```
-
-Denna arkitektur kan användas som bas för detaljdesign, ADR:er och implementation per etapp.
