@@ -1,5 +1,4 @@
-# Lösningsarkitektur
-
+# Enklare (mindre plottrig) lösningsarkitektur
 
 ```mermaid
 graph TB
@@ -8,13 +7,110 @@ graph TB
 subgraph inera[Inera]
 
     subgraph app[Teknik - applikation]
-        subgraph itk[Inera-tjänster]
-            itk1(Inera-klient)
-        end
+        itk1(API-klient)
 
-        subgraph itp[Inera-APIer]
-            itp1(Syftespecifikt<br>Inera-API, aggregerande)
-            itp2(Syftespecifikt<br>Inera-API, direkt)
+        itp1(Syftesspecifikt API)
+
+        sias(Åtkomstintygstjänst)
+        sikk(Klientmetadatakatalog)
+        sitk(Tjänstekatalog)
+        siii(Informationsindex)
+        sifmk(Federationsmedlemskatalog)
+        sifk(Formatkonverterare)
+
+        vp(Nationell tjänsteplattform)
+
+    end
+
+    subgraph infra[Teknik - infrastruktur]
+        drift[Inera driftmiljö]
+        APIM
+    end
+end
+
+subgraph tk[Extern tjänstekonsument]
+    tkc(API-klient)
+end
+
+subgraph tp[Extern tjänsteproducent]
+    tpas(Åtkomstintygstjänst)
+    tprtp(Regional tjänsteplattform)
+    tpfs(FHIR server)
+end
+
+subgraph ndi[Nationell Digital Infrastruktur, EHM]
+    ntk(Nationell tjänstekatalog)
+    pdi(Patientdataindex)
+end
+
+subgraph sib[Samordnad identitet och behörighet, Digg]
+    res(Resolver)
+    oi(OpenID Connect-profil, oidc.se)
+    o2(OAuth2-profil, Ena)
+    of(OpenID Federation-profil, oidc.se)
+end
+
+sias-.->sikk & sifmk
+sias -.-> o2
+sikk -.-> of
+sitk -.-> ntk
+siii -.-> pdi
+
+%% begär åtkomst
+itk1 -->sias & itp1
+
+%% hämta lokaliseringsinfo och logiskt adresserade producent-APIer
+itp1 --> siii & sitk
+
+%% Anropa externa REST-APIer
+itp1 --> tpas & tpfs
+
+%% Anropa externa BP2.1-tjänster
+itp1 --> vp --> tprtp
+
+%% Konvertera svar till det format (BP2.1/FHIR) som klienten önskar
+itp1 --> sifk
+
+%% anropa producent-API för att hämta refererad data
+itk1 --> tpas & tpfs
+
+%% extern konsument anropar Inera-API 
+tkc --> sias & itp1
+
+%% extern konsument anropar producent-API direkt för att hämta refererad data
+tkc --> tpas & tpfs
+
+%% 
+sifmk ~~~ tpas
+
+style inera fill:#FFFFFF,stroke:#000000
+style app fill:#76b3e8,stroke:#000000
+style infra fill:#76b3e8,stroke:#000000
+style tk fill:#F8E5A0
+style tp fill:#F8E5A0
+style ndi fill:#FFFFFF,stroke:#000000
+style sib fill:#FFFFFF,stroke:#000000
+style sifmk stroke-dasharray: 5 5
+
+
+%% Formatting for elk renderer
+
+%% Formatting for dagre (standard) renderer
+sias~~~~~~~~ndi & sib & tp
+```
+# Version inför workshop 1/4
+```mermaid
+graph TB
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+
+subgraph inera[Inera]
+
+    subgraph app[Teknik - applikation]
+
+        subgraph itk[Inera-tjänster]
+            itk1(Annan syftesspecifik<br>Inera-tjänst)
+            itk2(NPÖ)
+            itk3(Journalen)
         end
 
         subgraph siiam[IAM-komponenter]
@@ -45,13 +141,20 @@ subgraph inera[Inera]
             tak(Tjänsteadresseringskatalog)
         end
 
+        subgraph itp[Inera-API:er]
+            itp1(Formulärtjänsten)
+            itp2(Födelseanmälan)
+            itp3(Annat syftespecifikt<br>Inera-API)
+            itp4(EHDS-brygga)
+        end
+
         subgraph cp[WSO2 Kontrollplan]
-            PUB(API Publisher)
-            DEV(API Developer Portal)
-            ADM(Admin Portal)
-            KEY(Key Manager)
-            ANA(API Analytics)
-            SC(Service Catalog)
+            PUB[API Publisher]
+            DEV[API Developer Portal]
+            ADM[Admin Portal]
+            KEY[Key Manager]
+            ANA[API Analytics]
+            SC[Service Catalog]
         end
 
     end
@@ -59,7 +162,7 @@ subgraph inera[Inera]
     subgraph infra[Teknik - infrastruktur]
 
         subgraph drift[Inera drift]
-            kubernetes[Kubernetes-kluster]
+            kubernetes(Kubernetes-kluster)
             ~~~
             Servrar
             ~~~
@@ -124,19 +227,18 @@ vp --> anp
 vp --> ag
 vp --> ei
 vp --> tak
-svodc & itp2 --> vp
-svodc & itp2 --> siii
-svodc & itp2 --> sifk
-svodc & itp2 --> sifmk
-svodc & itp2 --> sitk
-itp2 --> sias
+svodc --> vp
+svodc --> siii
+svodc --> sifk
+svodc --> sifmk
+svodc --> sitk
 vp ----> tprtp
-tkc & itk1--> itp1 & itp2
-svodc & itp2 & tkc --> tpas
-svodc & itp2 & tkc --> tpfs
-tkc & itk1 --> sias
-itp1 --> sias & svodc
-tpas -.->sifmk
+tkc --> itp1 & itp2 & itp3 & itp4  --> svodc
+itk1 & itk2 & itk3 --> svodc
+svodc --> tpas
+svodc --> tpfs
+tkc --> sias
+itk1 & itk2 & itk3 --> sias
 
 style inera fill:#FFFFFF,stroke:#000000
 style app fill:#76b3e8,stroke:#000000
@@ -146,20 +248,15 @@ style tp fill:#F8E5A0
 style ndi fill:#FFFFFF,stroke:#000000
 style sib fill:#FFFFFF,stroke:#000000
 style KEY stroke-dasharray: 5 5
-style sifmk stroke-dasharray: 5 5
-style sikk stroke-dasharray: 5 5
-style sir stroke-dasharray: 5 5
-
 
 %% Formatting for elk renderer
 
 %% Formatting for dagre (standard) renderer
 sias~~~~~~~~~ndi & sib & tp
 tak~~~~GW
-
 ```
 
-## Översikt
+## Gammal översikt
 
 ```mermaid
 graph TB
