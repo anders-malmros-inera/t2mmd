@@ -1,39 +1,5 @@
 # Lösningsarkitektur
 
-## Översikt
-
-```mermaid
-graph TB
-    subgraph tk[Tjänstekonsument]
-        tkc(Klient)
-    end
-    
-
-    subgraph si[Samverkansinfrastrukturen]
-        direction TB
-        subgraph si1[Komponenter]
-            sias(Åtkomstintygstjänst) & sitk(Tjänstekatalog) & siagg(Aggregerande tjänst)
-            ~~~
-            siii(Informationsindex) & sifmk(Federationsmedlemskatalog) & sikk(Klientmetadatakatalog) & sifk(Formatkonverterare)
-        end
-        subgraph drift[Driftplattform]
-            gw(API Gateway)~~~ap(API Management)
-
-        end
-        subgraph ntjp[Nationell tjänsteplattform]
-            vp(Virtualisering) & ag(Aggregering) & anp(Anpassning)
-            ~~~
-            ei(Engagemangsindex) & tak(Tjänsteadressering)
-        end
-    end
-    subgraph tp[Tjänsteproducent]
-        tpas(Åtkomstintygstjänst)
-        tprtp(Regional tjänsteplattform)
-        tpfs(FHIR server)
-    end
-    tk ~~~ si ~~~ tp
-```
-
 
 ```mermaid
 graph TB
@@ -42,11 +8,13 @@ graph TB
 subgraph inera[Inera]
 
     subgraph app[Teknik - applikation]
-
         subgraph itk[Inera-tjänster]
-            itk1(Annan syftesspecifik<br>Inera-tjänst)
-            itk2(NPÖ)
-            itk3(Journalen)
+            itk1(Inera-klient)
+        end
+
+        subgraph itp[Inera-APIer]
+            itp1(Syftespecifikt<br>Inera-API, aggregerande)
+            itp2(Syftespecifikt<br>Inera-API, direkt)
         end
 
         subgraph siiam[IAM-komponenter]
@@ -77,20 +45,13 @@ subgraph inera[Inera]
             tak(Tjänsteadresseringskatalog)
         end
 
-        subgraph itp[Inera-API:er]
-            itp1(Formulärtjänsten)
-            itp2(Födelseanmälan)
-            itp3(Annat syftespecifikt<br>Inera-API)
-            itp4(EHDS-brygga)
-        end
-
         subgraph cp[WSO2 Kontrollplan]
-            PUB[API Publisher]
-            DEV[API Developer Portal]
-            ADM[Admin Portal]
-            KEY[Key Manager]
-            ANA[API Analytics]
-            SC[Service Catalog]
+            PUB(API Publisher)
+            DEV(API Developer Portal)
+            ADM(Admin Portal)
+            KEY(Key Manager)
+            ANA(API Analytics)
+            SC(Service Catalog)
         end
 
     end
@@ -98,7 +59,7 @@ subgraph inera[Inera]
     subgraph infra[Teknik - infrastruktur]
 
         subgraph drift[Inera drift]
-            kubernetes(Kubernetes-kluster)
+            kubernetes[Kubernetes-kluster]
             ~~~
             Servrar
             ~~~
@@ -163,18 +124,18 @@ vp --> anp
 vp --> ag
 vp --> ei
 vp --> tak
-svodc --> vp
-svodc --> siii
-svodc --> sifk
-svodc --> sifmk
-svodc --> sitk
+svodc & itp2 --> vp
+svodc & itp2 --> siii
+svodc & itp2 --> sifk
+svodc & itp2 --> sifmk
+svodc & itp2 --> sitk
+itp2 --> sias
 vp ----> tprtp
-tkc --> itp1 & itp2 & itp3 & itp4  --> svodc
-itk1 & itk2 & itk3 --> svodc
+tkc & itk1--> itp1 & itp2
 svodc --> tpas
 svodc --> tpfs
-tkc --> sias
-itk1 & itk2 & itk3 --> sias
+tkc & itk1 --> sias
+itp1 --> sias & svodc
 
 style inera fill:#FFFFFF,stroke:#000000
 style app fill:#76b3e8,stroke:#000000
@@ -184,6 +145,10 @@ style tp fill:#F8E5A0
 style ndi fill:#FFFFFF,stroke:#000000
 style sib fill:#FFFFFF,stroke:#000000
 style KEY stroke-dasharray: 5 5
+style sifmk stroke-dasharray: 5 5
+style sikk stroke-dasharray: 5 5
+style sir stroke-dasharray: 5 5
+
 
 %% Formatting for elk renderer
 
@@ -192,3 +157,38 @@ sias~~~~~~~~~ndi & sib & tp
 tak~~~~GW
 
 ```
+
+## Översikt
+
+```mermaid
+graph TB
+    subgraph tk[Tjänstekonsument]
+        tkc(Klient)
+    end
+    
+
+    subgraph si[Samverkansinfrastrukturen]
+        direction TB
+        subgraph si1[Komponenter]
+            sias(Åtkomstintygstjänst) & sitk(Tjänstekatalog) & siagg(Aggregerande tjänst)
+            ~~~
+            siii(Informationsindex) & sifmk(Federationsmedlemskatalog) & sikk(Klientmetadatakatalog) & sifk(Formatkonverterare)
+        end
+        subgraph drift[Driftplattform]
+            gw(API Gateway)~~~ap(API Management)
+
+        end
+        subgraph ntjp[Nationell tjänsteplattform]
+            vp(Virtualisering) & ag(Aggregering) & anp(Anpassning)
+            ~~~
+            ei(Engagemangsindex) & tak(Tjänsteadressering)
+        end
+    end
+    subgraph tp[Tjänsteproducent]
+        tpas(Åtkomstintygstjänst)
+        tprtp(Regional tjänsteplattform)
+        tpfs(FHIR server)
+    end
+    tk ~~~ si ~~~ tp
+```
+
