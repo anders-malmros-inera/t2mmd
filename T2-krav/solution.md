@@ -132,10 +132,11 @@ svodc & itp2 --> sitk
 itp2 --> sias
 vp ----> tprtp
 tkc & itk1--> itp1 & itp2
-svodc --> tpas
-svodc --> tpfs
+svodc & itp2 & tkc --> tpas
+svodc & itp2 & tkc --> tpfs
 tkc & itk1 --> sias
 itp1 --> sias & svodc
+tpas -.->sifmk
 
 style inera fill:#FFFFFF,stroke:#000000
 style app fill:#76b3e8,stroke:#000000
