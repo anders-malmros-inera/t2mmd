@@ -38,8 +38,6 @@ classDiagram
 
     class Credentials{
         email
-        _password_
-        _MFDinfo_
     }
     Human --> "0..1" Credentials
 
