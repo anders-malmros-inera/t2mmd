@@ -7,7 +7,9 @@ graph TB
 subgraph inera[Inera]
 
     subgraph app[Teknik - applikation]
-        itk1(API-klient)
+        subgraph itk[Inera-tjänst]
+            itk1(API-klient)
+        end
 
         itp1(Syftesspecifikt API)
 
@@ -28,7 +30,7 @@ subgraph inera[Inera]
     end
 end
 
-subgraph tk[Extern tjänstekonsument]
+subgraph tk[Extern tjänst]
     tkc(API-klient)
 end
 
@@ -75,13 +77,13 @@ itp1 --> vp --> tprtp
 itp1 --> sifk
 
 %% anropa producent-API för att göra diret anrop eller hämta refererad data i aggregerat svar
-itk1 --> tpas & tpfs
+itk1 --> tpas & tpfs & tprtp
 
 %% extern konsument anropar Inera-API 
 tkc --> sias & itp1
 
 %% extern konsument anropar producent-API direkt för att hämta refererad data
-tkc --> tpas & tpfs
+tkc --> tpas & tpfs  & tprtp
 
 %% 
 sifmk ~~~ tpas
@@ -90,6 +92,7 @@ style inera fill:#FFFFFF,stroke:#000000
 style app fill:#76b3e8,stroke:#000000
 style infra fill:#76b3e8,stroke:#000000
 style tk fill:#F8E5A0
+style itk fill:#F8E5A0
 style tp fill:#F8E5A0
 style ndi fill:#FFFFFF,stroke:#000000
 style sib fill:#FFFFFF,stroke:#000000
@@ -99,8 +102,22 @@ style sifmk stroke-dasharray: 5 5
 %% Formatting for elk renderer
 
 %% Formatting for dagre (standard) renderer
-sias~~~~~~~~ndi & sib & tp
 ```
+# Scenarion
+<b>Not:</b> Med "syftesspecifikt API" ned avses att förmedlad data filtreras och kompletteras utifrån en specifik tillämpning inom ett specifikt lagrum
+
+1. <b>Inera-tjänst anropar logiskt adresserad tjänsteproducent-API direkt</b><br>
+a) tjänsten begär åtkomst till Tjänstekatalogen från Ineras Åtkomstintygstjänst<br>
+b) tjänsten hämtar metadata om tjänsteproducentens API från Tjänstekatalog<br>
+c) tjänsten begär åtkomst till API från tjänsteproducents AS<br>
+d) tjänsten anropar tjänsteproducents API<br><br>
+
+1. <b>Inera-tjänst anropar syftesspecifikt aggregerande API</b><br><br>
+
+1. <b>Extern tjänst anropar syftesspecifik aggregerande API hos Inera</b><br><br>
+
+1. <b>Extern tjänst anropar syftesspecifik API som inte aggregerar information</b><br><br>
+
 # Version inför workshop 1/4
 ```mermaid
 graph TB
