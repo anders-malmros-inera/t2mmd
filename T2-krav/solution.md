@@ -74,7 +74,7 @@ itp1 --> vp --> tprtp
 %% Konvertera svar till det format (BP2.1/FHIR) som klienten önskar
 itp1 --> sifk
 
-%% anropa producent-API för att hämta refererad data
+%% anropa producent-API för att göra diret anrop eller hämta refererad data i aggregerat svar
 itk1 --> tpas & tpfs
 
 %% extern konsument anropar Inera-API 
