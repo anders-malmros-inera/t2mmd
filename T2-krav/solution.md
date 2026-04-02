@@ -1,4 +1,4 @@
-# Enklare (mindre plottrig) lösningsarkitektur
+# Förenklad lösningsarkitektur
 
 ```mermaid
 graph TB
@@ -73,9 +73,6 @@ itp1 --> tpas & tpfs
 %% Anropa externa BP2.1-tjänster
 itp1 --> vp --> tprtp
 
-%% Konvertera svar till det format (BP2.1/FHIR) som klienten önskar
-itp1 --> sifk
-
 %% anropa producent-API för att göra diret anrop eller hämta refererad data i aggregerat svar
 itk1 --> tpas & tpfs & tprtp
 
@@ -85,8 +82,10 @@ tkc --> sias & itp1
 %% extern konsument anropar producent-API direkt för att hämta refererad data
 tkc --> tpas & tpfs  & tprtp
 
-%% 
-sifmk ~~~ tpas
+%% Konvertera svar till det format (BP2.1/FHIR) som klienten önskar
+itk1 & itp1 --> sifk
+
+
 
 style inera fill:#FFFFFF,stroke:#000000
 style app fill:#76b3e8,stroke:#000000
@@ -100,6 +99,7 @@ style sifmk stroke-dasharray: 5 5
 
 
 %% Formatting for elk renderer
+sifmk ~~~ tpas
 
 %% Formatting for dagre (standard) renderer
 ```
@@ -110,13 +110,21 @@ style sifmk stroke-dasharray: 5 5
 a) tjänsten begär åtkomst till Tjänstekatalogen från Ineras Åtkomstintygstjänst<br>
 b) tjänsten hämtar metadata om tjänsteproducentens API från Tjänstekatalog<br>
 c) tjänsten begär åtkomst till API från tjänsteproducents AS<br>
-d) tjänsten anropar tjänsteproducents API<br><br>
+d) tjänsten anropar tjänsteproducents API<br>
+e) tjänsten hämtar refererad information från tjänsteproducentens API<br>
+f) tjänsten konverterar information till 
+<br>
 
-1. <b>Inera-tjänst anropar syftesspecifikt aggregerande API</b><br><br>
+1. <b>Inera-tjänst anropar syftesspecifikt aggregerande API</b><br>
+...TBC<br>
+<br>
+1. <b>Extern tjänst anropar syftesspecifik aggregerande API hos Inera</b><br>
+...TBC<br>
+<br>
 
-1. <b>Extern tjänst anropar syftesspecifik aggregerande API hos Inera</b><br><br>
-
-1. <b>Extern tjänst anropar syftesspecifik API som inte aggregerar information</b><br><br>
+1. <b>Extern tjänst anropar syftesspecifik API som inte aggregerar information</b><br>
+...TBC<br>
+<br>
 
 # Version inför workshop 1/4
 ```mermaid
