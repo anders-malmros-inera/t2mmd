@@ -62,6 +62,9 @@ itk1 -->sias & itp1
 %% hämta lokaliseringsinfo och logiskt adresserade producent-APIer
 itp1 --> siii & sitk
 
+%% slå upp anropsadress om man vill anropa producent-API direkt
+itk1 --> sitk
+
 %% Anropa externa REST-APIer
 itp1 --> tpas & tpfs
 
