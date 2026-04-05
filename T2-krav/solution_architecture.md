@@ -720,13 +720,13 @@ graph TB
 
 ### MVP 1 – Grundläggande åtkomst och katalog
 
-- Etablera ÅT, KM, FM och TC.
+- Etablera Åtkomstintygstjänst, Klientmetadatakatalog, Federationsmedlemskatalog och Tjänstekatalog.
 - Införa basflöde för säkert API-anrop (A01, A02, A04, A06).
 - Etablera maskinläsbar metadata (OpenAPI/Well-known) för upptäckt/bindning.
 
 ### MVP 2 – Informationsförsörjning
 
-- Etablera IT, AT och FK.
+- Etablera Informationsindex, Aggregerande tjänst och Formatkonverterare.
 - Aktivera parallell inhämtning och aggregerat svar (A08).
 - Implementera producentspårbarhet i svar och deterministisk formatkonvertering.
 
@@ -761,25 +761,25 @@ graph TB
 ### 12.1 Spårbarhet – användningskrav (CSV)
 
 - **A01 Hitta API**: realiseras i Tjänstekatalog med logisk adressering och interoperabilitetsmetadata.
-- **A02 Hitta metadata för åtkomstbegäran**: realiseras i Tjänstekatalog (mTLS/OAuth2-metadata) samt ÅT/KM.
+- **A02 Hitta metadata för åtkomstbegäran**: realiseras i Tjänstekatalog (mTLS/OAuth2-metadata) samt Åtkomstintygstjänst/Klientmetadatakatalog.
 - **A03 Hitta metadata för API-anrop**: realiseras i Tjänstekatalog via metadata för synkront svar respektive SSE.
-- **A04 Begär åtkomst till API**: realiseras i ÅT med stöd för CC/AC-flöden samt FM/KM-kontroller.
+- **A04 Begär åtkomst till API**: realiseras i Åtkomstintygstjänst med stöd för CC/AC-flöden samt Federationsmedlemskatalog/Klientmetadatakatalog-kontroller.
 - **A06 Anropa API**: realiseras i API-gateway med token-/mTLS-verifiering och routing.
-- **A07 Förmedla anrop (synkront/delsvar)**: realiseras i AT/API med valbart leveranssätt.
-- **A08 Hämta aggregerad personrelaterad data**: realiseras i IT + TC + AT + FK med SOAP/FHIR-interoperabilitet.
+- **A07 Förmedla anrop (synkront/delsvar)**: realiseras i Aggregerande tjänst/API med valbart leveranssätt.
+- **A08 Hämta aggregerad personrelaterad data**: realiseras i Informationsindex + Tjänstekatalog + Aggregerande tjänst + Formatkonverterare med SOAP/FHIR-interoperabilitet.
 
 ### 12.2 Spårbarhet – systemkrav (CSV)
 
 - **Lös koppling (LK-01..LK-05)**: SemVer, OpenAPI/Well-known, logisk adressering och standardprotokoll.
 - **Tillit/Åtkomst (TH-01..TH-04, Å-01..Å-04, RA-01..RA-03)**: federationskontroller, metadata, tokenprofiler och policystyrd åtkomst.
-- **Datainhämtning (D-01..D-11)**: AT för aggregation/partiella svar, FK för deterministisk konvertering, IT för indexering/ägarskap/deduplicering.
+- **Datainhämtning (D-01..D-11)**: Aggregerande tjänst för aggregation/partiella svar, Formatkonverterare för deterministisk konvertering, Informationsindex för indexering/ägarskap/deduplicering.
 - **Tillgänglighet/Prestanda/Robusthet (TG-01..TG-05, P-01..P-03, R-01..R-06)**: lokala instanser, redundans, SLA/SLO, synkkrav och resilient anropsmönster.
 - **Säkerhet/Skalbarhet/Integritet (SÄ-01..SÄ-08, SK-01..SK-03, DI-01..DI-05)**: TLS, least privilege, autoskalning, revisionsspår, backup och verifierbar synk.
 - **Övervakning/Förvaltning/Regelefterlevnad (Ö-01..Ö-04, F-01..F-05, RE-01..RE-05)**: metrics/logs/tracing, CI/CD-kvalitet, livscykelhantering, GDPR/RIV-TA/eIDAS/WCAG.
 
 ### 12.3 Tolkningar och öppna punkter från kravunderlag
 
-- Kravet kring asynkrona mönster i LK-03 tolkas som **obligatoriskt för informationsförsörjning (AT/API)** men **inte obligatoriskt för katalogernas synkgränssnitt**, där pull-baserad delta/full-synk är huvudmönster.
+- Kravet kring asynkrona mönster i LK-03 tolkas som **obligatoriskt för informationsförsörjning (Aggregerande tjänst/API)** men **inte obligatoriskt för katalogernas synkgränssnitt**, där pull-baserad delta/full-synk är huvudmönster.
 - I systemkravslistan finns dubbel-ID för P-02; tolkning i detta dokument är att båda prestandakraven gäller (1000 samtidiga förfrågningar samt 5 min inkrementell synk).
 - RE-02 anger profiler utan uttömmande lista; arkitekturen utgår från Ena OAuth2-profil, OIDC/OAuth2-profiler samt RIV-TA.
 
@@ -821,7 +821,7 @@ Statusvärden: **Planerad**, **Pågår**, **Klar**.
 
 - **Säkerhet**: SÄ-01, SÄ-02, SÄ-03 uppfyllda före produktion.
 - **Observerbarhet**: Ö-01, Ö-02, Ö-03 och korrelations-id (Ö-04) verifierade i testmiljö.
-- **Resiliens**: R-03/R-04 implementerade för AT och gateway; R-01/R-02 för kataloger/index.
+- **Resiliens**: R-03/R-04 implementerade för Aggregerande tjänst och gateway; R-01/R-02 för kataloger/index.
 - **Prestanda**: P95-krav verifierade (P-01/P-03) samt samtidighet/synkkrav (P-02).
 - **Förvaltningsbarhet**: SemVer + publicerade kontrakt (F-01..F-04) och CI/CD-testning (F-05).
 
@@ -990,8 +990,8 @@ Anslutningsprocessen mappas mot MVP-planen (sektion 11) enligt:
 
 | Anslutningsfas | Kräver MVP-nivå |
 |---|---|
-| Teknisk registrering (FM, KM, TC) | MVP 1 |
-| Åtkomstflöde och verifiering (ÅT) | MVP 1 |
+| Teknisk registrering (Federationsmedlemskatalog, Klientmetadatakatalog, Tjänstekatalog) | MVP 1 |
+| Åtkomstflöde och verifiering (Åtkomstintygstjänst) | MVP 1 |
 | Informationsförsörjning och samverkansetablering | MVP 2 |
 | Strömmade svar och robust felhantering | MVP 3 |
 | Standardiserad onboarding, full observability | MVP 4 |
