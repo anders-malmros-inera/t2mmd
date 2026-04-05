@@ -6,7 +6,6 @@
 	- [Intressentvy](#intressentvy)
 - [2. Arkitekturprinciper](#2-arkitekturprinciper)
 - [3. Konceptuell målbild](#3-konceptuell-målbild)
-	- [3.1 Detaljerad referensmålbild (från solution.md)](#31-detaljerad-referensmålbild-från-solutionmd)
 	- [3.2 Nyckelkopplingar i den detaljerade målbilden](#32-nyckelkopplingar-i-den-detaljerade-målbilden)
 	- [Affärs- och förmågevy](#affärs--och-förmågevy)
 - [4. Byggblock och ansvar](#4-byggblock-och-ansvar)
@@ -46,6 +45,10 @@
 	- [NFR-översikt (målnivåer)](#nfr-översikt-målnivåer)
 - [10. Beslutslista (ADR-kandidater)](#10-beslutslista-adr-kandidater)
 - [11. MVP-indelning och införandeplan](#11-mvp-indelning-och-införandeplan)
+	- [MVP 1 – Grundläggande åtkomst och katalog](#mvp-1--grundläggande-åtkomst-och-katalog)
+	- [MVP 2 – Informationsförsörjning](#mvp-2--informationsförsörjning)
+	- [MVP 3 – Strömning och robusthet](#mvp-3--strömning-och-robusthet)
+	- [MVP 4 – Plattformsmognad och förvaltning](#mvp-4--plattformsmognad-och-förvaltning)
 - [12. Spårbarhet till kravunderlag](#12-spårbarhet-till-kravunderlag)
 	- [12.1 Spårbarhet – användningskrav (CSV)](#121-spårbarhet--användningskrav-csv)
 	- [12.2 Spårbarhet – systemkrav (CSV)](#122-spårbarhet--systemkrav-csv)
@@ -116,41 +119,7 @@ graph LR
 
 ## 3. Konceptuell målbild
 
-```mermaid
-graph TB
-		subgraph tk[Tjänstekonsument]
-				tkc(Klient)
-		end
 
-		subgraph si[Samverkansinfrastrukturen]
-				direction TB
-				subgraph si1[Komponenter]
-						sias(Åtkomstintygstjänst) & sitk(Tjänstekatalog) & siagg(Aggregerande tjänst)
-						~~~
-						siii(Informationsindex) & sifmk(Federationsmedlemskatalog) & sikk(Klientmetadatakatalog) & sifk(Formatkonverterare)
-				end
-				subgraph drift[Driftplattform]
-						gw(API Gateway)~~~ap(API Management)
-				end
-				subgraph ntjp[Nationell tjänsteplattform]
-						vp(Virtualisering) & ag(Aggregering) & anp(Anpassning)
-						~~~
-						ei(Engagemangsindex) & tak(Tjänsteadressering)
-				end
-		end
-
-		subgraph tp[Tjänsteproducent]
-				tpas(Åtkomstintygstjänst)
-				tprtp(Regional tjänsteplattform)
-				tpfs(FHIR-server/API)
-		end
-
-		tk ~~~ si ~~~ tp
-```
-
-### 3.1 Detaljerad referensmålbild (från solution.md)
-
-Den detaljerade målbilden kompletterar den konceptuella bilden med en tydlig lagerindelning:
 
 - **Applikationslager (Inera)**: Inera-klienter, IAM-komponenter, informationsförsörjningstjänster, T2-stödtjänster, formatkonvertering, nationell tjänsteplattform, Inera-API:er.
 - **Plattformslager**: WSO2 Kontrollplan, WSO2 Data Plane samt WSO2 Integration Layer.
@@ -158,160 +127,96 @@ Den detaljerade målbilden kompletterar den konceptuella bilden med en tydlig la
 - **Externa ekosystem**: Externa tjänstekonsumenter/-producenter, Nationell digital infrastruktur (EHM) och Samordnad identitet/behörighet (Digg).
 
 ```mermaid
-graph TB
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+graph TB
 
 subgraph inera[Inera]
 
     subgraph app[Teknik - applikation]
-
-        subgraph itk[Inera-tjänster]
-            itk1(Annan syftesspecifik<br>Inera-tjänst)
-            itk2(NPÖ)
-            itk3(Journalen)
+        subgraph itk[Inera-tjänst]
+            itk1(API-klient)
         end
 
-        subgraph siiam[IAM-komponenter]
-            sias(Åtkomstintygstjänst)
-            sikk(Klientmetadatakatalog)
-            sir(Inera-resolver)
-        end
+        itp1(Syftesspecifikt API)
 
-        subgraph siit[Informationsförsörjning]
-            svodc(Aggregerande tjänst)
-        end
+        sias(Åtkomstintygstjänst)
+        sikk(Klientmetadatakatalog)
+        sitk(Tjänstekatalog)
+        siii(Informationsindex)
+        sifmk(Federationsmedlemskatalog<br>_inväntar AB_)
+        sifk(Formatkonverterare)
 
-        subgraph si1[T2-stödtjänster]
-            sitk(Tjänstekatalog)
-            siii(Informationsindex)
-            sifmk(Federationsmedlemskatalog)
-        end
-
-        subgraph si2[FHIR/BP2.1]
-            sifk(Formatkonverterare)
-        end
-
-        subgraph ntjp[Nationell tjänsteplattform]
-            vp(Virtualiseringsplattform)
-            ag(Aggregeringsplattform)
-            anp(Anpassningsplattform)
-            ei(Engagemangsindex)
-            tak(Tjänsteadresseringskatalog)
-        end
-
-        subgraph itp[Inera-API:er]
-            itp1(Formulärtjänsten)
-            itp2(Födelseanmälan)
-            itp3(Annat syftespecifikt<br>Inera-API)
-            itp4(EHDS-brygga)
-        end
-
-        subgraph cp[WSO2 Kontrollplan]
-            PUB[API Publisher]
-            DEV[API Developer Portal]
-            ADM[Admin Portal]
-            KEY[Key Manager]
-            ANA[API Analytics]
-            SC[Service Catalog]
-        end
+        vp(Nationell tjänsteplattform)
 
     end
 
     subgraph infra[Teknik - infrastruktur]
-
-        subgraph drift[Inera drift]
-            kubernetes(Kubernetes-kluster)
-            ~~~
-            Servrar
-            ~~~
-            Databaser
-            ~~~
-            Nätverk
-        end
-    
-        subgraph DP[WSO2 Data Plane]
-            GW[API Gateway]
-            TM[Traffic Manager]
-        end
-
-        subgraph IL[WSO2 Integration Layer]
-            MI[Micro Integrator]
-            SI[Streaming Integrator]
-        end
+        drift[Inera driftmiljö]
+        APIM[API Management]
     end
 end
 
-subgraph tk[Extern tjänstekonsument]
-    tkc(Klient)
+subgraph tk[Extern part]
+    tkc(API-klient)
 end
 
-subgraph tp[Extern tjänsteproducent]
+subgraph tp[Extern part]
     tpas(Åtkomstintygstjänst)
     tprtp(Regional tjänsteplattform)
     tpfs(FHIR server)
 end
 
-subgraph ndi[Nationell Digital Infrastruktur, EHM]
-    ntk(Nationell tjänstekatalog)
-    pdi(Patientdataindex)
-end
+sias-->sifmk
+sias-->sikk 
 
-subgraph sib[Samordnad identitet och behörighet, Digg]
-    res(Resolver)
-    oi(OpenID Connect-profil, oidc.se)
-    o2(OAuth2-profil, Ena)
-    of(OpenID Federation-profil, oidc.se)
-end
+%% Hitta anropsadress
+tkc-->sitk
+
+%% begär åtkomst
+itk1 -->sias & itp1
+
+%% hämta lokaliseringsinfo och logiskt adresserade producent-APIer
+itp1 --> siii & sitk
+
+%% slå upp anropsadress om man vill anropa producent-API direkt
+itk1 --> sitk
+
+%% Anropa externa REST-APIer
+itp1 --> tpas & tpfs
+
+%% Anropa externa BP2.1-tjänster
+itp1 --> vp --> tprtp
+
+%% anropa producent-API för att göra direkt anrop eller hämta refererad data i aggregerat svar
+itk1 --> tpas & tpfs & tprtp
+
+%% extern konsument anropar Inera-API 
+tkc --> sias & itp1
+
+%% extern konsument anropar producent-API direkt för att hämta refererad data
+tkc --> tpas & tpfs  & tprtp
+
+%% Konvertera svar till det format (BP2.1/FHIR) som klienten önskar
+itk1 & itp1 --> sifk
 
 
-SC --> PUB
-cp-->GW
-
-GW --> MI
-GW --> SI
-TM --> GW
-
-sias -.-> o2
-sitk -.-> ntk
-siii -.-> pdi
-sikk -.-> of
-sir -.-> res
-sias --> sir
-sir --> sikk
-ag --> vp
-ag --> ei
-ag --> tak
-vp --> anp
-vp --> ag
-vp --> ei
-vp --> tak
-svodc --> vp
-svodc --> siii
-svodc --> sifk
-svodc --> sifmk
-svodc --> sitk
-vp ----> tprtp
-tkc --> itp1 & itp2 & itp3 & itp4  --> svodc
-itk1 & itk2 & itk3 --> svodc
-svodc --> tpas
-svodc --> tpfs
-tkc --> sias
-itk1 & itk2 & itk3 --> sias
 
 style inera fill:#FFFFFF,stroke:#000000
 style app fill:#76b3e8,stroke:#000000
 style infra fill:#76b3e8,stroke:#000000
 style tk fill:#F8E5A0
+style itk fill:#F8E5A0
 style tp fill:#F8E5A0
-style ndi fill:#FFFFFF,stroke:#000000
-style sib fill:#FFFFFF,stroke:#000000
-style KEY stroke-dasharray: 5 5
+style sifmk stroke-dasharray: 5 5
+
 
 %% Formatting for elk renderer
+%% sifmk ~~~ tpas
 
 %% Formatting for dagre (standard) renderer
-sias~~~~~~~~~ndi & sib & tp
-tak~~~~GW
+vp ~~~ infra
+tkc ~~~ itk
+APIM ~~~ tp
 ```
 
 ### 3.2 Nyckelkopplingar i den detaljerade målbilden
