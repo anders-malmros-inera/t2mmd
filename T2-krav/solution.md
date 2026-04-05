@@ -42,7 +42,8 @@ subgraph tp[Extern part]
     tpfs(FHIR server)
 end
 
-sias-.->sikk & sifmk
+sias-->sifmk
+sias-->sikk 
 
 %% begär åtkomst
 itk1 -->sias & itp1
