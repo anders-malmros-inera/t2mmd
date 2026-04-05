@@ -2,7 +2,7 @@
 
 ```mermaid
 graph TB
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+%%{init: {"flowchart": {"defaultRenderer": "elk2"}} }%%
 
 subgraph inera[Inera]
 
@@ -30,33 +30,17 @@ subgraph inera[Inera]
     end
 end
 
-subgraph tk[Extern tjänst]
+subgraph tk[Extern part]
     tkc(API-klient)
 end
 
-subgraph tp[Extern tjänsteproducent]
+subgraph tp[Extern part]
     tpas(Åtkomstintygstjänst)
     tprtp(Regional tjänsteplattform)
     tpfs(FHIR server)
 end
 
-subgraph ndi[Nationell Digital Infrastruktur, EHM]
-    ntk(Nationell tjänstekatalog)
-    pdi(Patientdataindex)
-end
-
-subgraph sib[Samordnad identitet och behörighet, Digg]
-    res(Resolver)
-    oi(OpenID Connect-profil, oidc.se)
-    o2(OAuth2-profil, Ena)
-    of(OpenID Federation-profil, oidc.se)
-end
-
 sias-.->sikk & sifmk
-sias -.-> o2
-sikk -.-> of
-sitk -.-> ntk
-siii -.-> pdi
 
 %% begär åtkomst
 itk1 -->sias & itp1
@@ -93,15 +77,57 @@ style infra fill:#76b3e8,stroke:#000000
 style tk fill:#F8E5A0
 style itk fill:#F8E5A0
 style tp fill:#F8E5A0
-style ndi fill:#FFFFFF,stroke:#000000
-style sib fill:#FFFFFF,stroke:#000000
 style sifmk stroke-dasharray: 5 5
 
 
 %% Formatting for elk renderer
-sifmk ~~~ tpas
+%% sifmk ~~~ tpas
 
 %% Formatting for dagre (standard) renderer
+vp ~~~ infra
+tkc ~~~ itk
+APIM ~~~ tp
+```
+
+## Komponenter med externa beroenden
+
+```mermaid
+graph TB
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+
+subgraph inera[Inera]
+
+    subgraph app[Teknik - applikation]
+        sias(Åtkomstintygstjänst)
+        sikk(Klientmetadatakatalog)
+        sitk(Tjänstekatalog)
+        siii(Informationsindex)
+    end
+
+end
+
+subgraph ndi[Nationell Digital Infrastruktur, EHM]
+    ntk(Nationell tjänstekatalog)
+    pdi(Patientdataindex)
+end
+
+subgraph sib[Samordnad identitet och behörighet, Digg]
+    oi(OpenID Connect-profil, oidc.se)
+    o2(OAuth2-profil, Ena)
+    of(OpenID Federation-profil, oidc.se)
+end
+
+sias -.-> o2 & oi
+sikk -.-> of
+sitk -.-> ntk
+siii -.-> pdi
+
+
+style inera fill:#FFFFFF,stroke:#000000
+style app fill:#76b3e8,stroke:#000000
+style ndi fill:#FFFFFF,stroke:#000000
+style sib fill:#FFFFFF,stroke:#000000
+
 ```
 # Scenarion
 <b>Not:</b> Med "syftesspecifikt API" ned avses att förmedlad data filtreras och kompletteras utifrån en specifik tillämpning inom ett specifikt lagrum
