@@ -1,4 +1,6 @@
-# Förenklad lösningsarkitektur
+# Samverkansinfrastrukturen
+
+## Lösningsarkitektur
 
 ```mermaid
 graph TB
