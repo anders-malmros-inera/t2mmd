@@ -19,7 +19,7 @@ subgraph inera[Inera]
         sikk(Klientmetadatakatalog)
         sitk(Tjänstekatalog)
         siii(Informationsindex)
-        sifmk(Federationsmedlemskatalog)
+        sifmk(Federationsmedlemskatalog<br><i>inväntar AB</i>)
         sifk(Formatkonverterare)
 
         vp(Nationell tjänsteplattform)
