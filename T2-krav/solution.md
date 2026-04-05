@@ -2,7 +2,7 @@
 
 ```mermaid
 graph TB
-%%{init: {"flowchart": {"defaultRenderer": "elk2"}} }%%
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
 subgraph inera[Inera]
 
